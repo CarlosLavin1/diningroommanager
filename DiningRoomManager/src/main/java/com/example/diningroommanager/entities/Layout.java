@@ -23,7 +23,7 @@ public class Layout {
     private Date createdDate;
 
     @NotNull
-    @OneToMany(mappedBy = "table", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "layout", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Table> tables;
 
     public Layout() {
