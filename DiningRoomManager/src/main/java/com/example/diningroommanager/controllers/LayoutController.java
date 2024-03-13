@@ -64,7 +64,7 @@ public class LayoutController {
             model.addAttribute("layout", layout.get());
         }
 
-        return "product/edit";
+        return "layput/edit";
     }
 
     @PostMapping(value = "layout/edit/{id}")
