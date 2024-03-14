@@ -24,11 +24,11 @@ public class Event {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate endDate;
     @NotNull(message = "Seating duration is required")
-    @DateTimeFormat(pattern="HH:mm")
-    private LocalTime seatingDuration;
+    //@DateTimeFormat(pattern="HH:mm")
+    private Integer seatingDuration;
     @NotBlank(message = "Name is required")
     private String name;
-    @NotBlank(message = "Description is required")
+
     private String description;
     @NotNull(message = "Price is required")
     @Positive(message = "Price can't be negative")
@@ -39,7 +39,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(LocalDate startDate, LocalDate endDate, LocalTime seatingDuration, String name, String description, Double price, List<Seating> seatings) {
+    public Event(LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.seatingDuration = seatingDuration;
@@ -49,7 +49,7 @@ public class Event {
         this.seatings = seatings;
     }
 
-    public Event(int id, LocalDate startDate, LocalDate endDate, LocalTime seatingDuration, String name, String description, Double price, List<Seating> seatings) {
+    public Event(int id, LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -84,11 +84,11 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public LocalTime getSeatingDuration() {
+    public Integer getSeatingDuration() {
         return seatingDuration;
     }
 
-    public void setSeatingDuration(LocalTime seatingDuration) {
+    public void setSeatingDuration(Integer seatingDuration) {
         this.seatingDuration = seatingDuration;
     }
 

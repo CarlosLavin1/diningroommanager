@@ -22,7 +22,7 @@ public class EventController {
         this.seatingRepo = seatingRepo;
     }
 
-    @GetMapping(value = "/events")
+    @GetMapping(value = {"/events", "/"})
     public String getAll(Model model) {
         var items = eventRepo.findAll();
         model.addAttribute("events", items);
