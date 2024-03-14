@@ -1,5 +1,6 @@
 package com.example.diningroommanager.controllers;
 
+import com.example.diningroommanager.entities.Seating;
 import com.example.diningroommanager.repositories.EventRepository;
 import com.example.diningroommanager.repositories.SeatingRepository;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,15 @@ public class SeatingController {
         model.addAttribute("seatings", items);
 
         return "seating/index";
+    }
+
+    @GetMapping("/seating/create/{id}")
+    public String create(Model model, @PathVariable int id) {
+        var event = eventRepo.findById(id);
+        model.addAttribute("event", event);
+        model.addAttribute("seating", new Seating());
+
+        return "seating/create";
     }
 
     @GetMapping(value = "/seating/details/{id}")

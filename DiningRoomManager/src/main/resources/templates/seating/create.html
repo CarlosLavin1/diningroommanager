@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Create a Seating</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
 </head>
-<body>
-
+<body class="bg-secondary">
+<div class="container">
+    <header th:insert="~{nav :: navbar}"></header>
+    <h2 class="text-center">Create A Seating</h2>
+    <form method="POST" th:object="${seating}" th:action="@{/seating/create/{id}(id=${event.get().id})}">
+        <h4 class="text-center">Event: <span th:text="${event.get().name}"></span></h4>
+        <div class="form-group">
+            <label class="form-label">Start Date And Time:</label>
+            <input class="form-control" th:field="*{startDateAndTime}" type="datetime-local"/>
+            <div class="alert alert-warning" th:errors="*{startDateAndTime}"></div>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Create"/>
+    </form>
+    <a th:href="@{/event/details/{id}(id=${event.get().id})}" class="btn btn-success mt-3">Go Back</a>
+</div>
 </body>
 </html>
