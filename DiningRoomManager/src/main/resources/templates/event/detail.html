@@ -9,7 +9,7 @@
 <body class="bg-secondary">
 <div class="container" th:object="${event}">
     <header th:insert="~{nav :: navbar}"></header>
-    <h2 class="text-center text-info">Event Details</h2>
+    <h2 class="text-center">Event Details</h2>
     <dl class="row" th:object="${event}">
         <dt class="col-sm-2">
             Name:
@@ -18,7 +18,26 @@
             <span th:text="*{name}"></span>
         </dd>
     </dl>
-    <a th:href="@{/seating/create/{id}(id=${event.id})}" class="btn btn-primary">Create A Seating For This Event</a>
+    <a th:href="@{/seating/create/{id}(id=${event.id})}" class="btn btn-primary">Add A Seating For This Event</a>
+    <hr>
+    <h2>Seatings For <span th:text="*{name}"></span></h2>
+    <table class="table-dark" th:unless="${event.seatings == null || event.seatings.size() == 0}">
+        <thead>
+            <tr>
+                <th>Start Time And Date</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="seating: ${event.seatings}">
+                <td><input type="datetime-local" th:value="${seating.startDateAndTime}"></td>
+                <td>
+                    <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-info">Details</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/}" class="btn btn-success mt-3">Go Back</a>
 </div>
 </body>
 </html>

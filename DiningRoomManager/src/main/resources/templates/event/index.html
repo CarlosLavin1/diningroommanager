@@ -18,6 +18,7 @@
             <th class="text-info">Start Date</th>
             <th class="text-info">End Date</th>
             <th class="text-info">Price</th>
+            <th class="text-info">Seating Duration</th>
             <th class="text-info">Manage</th>
         </tr>
         </thead>
@@ -36,9 +37,13 @@
                 <span th:text="${#numbers.formatCurrency(event.price)}"></span>
             </td>
             <td>
+                <span th:text="${event.seatingDuration}"></span><span> minutes</span>
+            </td>
+            <td>
                 <a th:href="@{/event/details/{id}(id=${event.id})}" class="btn btn-info">Details</a> |
                 <a th:href="@{/event/edit/{id}(id=${event.id})}" class="btn btn-warning">Edit</a> |
-                <a th:href="@{/event/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/event/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a> |
+                <a th:href="@{/seating/create/{id}(id=${event.id})}" class="btn btn-success">Add A Seating</a>
             </td>
         </tr>
         </tbody>

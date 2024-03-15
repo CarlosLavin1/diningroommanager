@@ -14,16 +14,15 @@ public class Seating {
     private int id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", foreignKey = @ForeignKey(name = "FK_Seating_Event"))
-    @NotNull(message = "Event is required")
     private Event event;
     @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "Start date and time is required")
-    private LocalDateTime StartDateAndTime;
+    private LocalDateTime startDateAndTime;
 
     public Seating(int id, Event event, LocalDateTime startDateAndTime) {
         this.id = id;
         this.event = event;
-        StartDateAndTime = startDateAndTime;
+        this.startDateAndTime = startDateAndTime;
     }
 
     public Seating() {
@@ -46,10 +45,10 @@ public class Seating {
     }
 
     public LocalDateTime getStartDateAndTime() {
-        return StartDateAndTime;
+        return startDateAndTime;
     }
 
     public void setStartDateAndTime(LocalDateTime startDateAndTime) {
-        StartDateAndTime = startDateAndTime;
+        this.startDateAndTime = startDateAndTime;
     }
 }

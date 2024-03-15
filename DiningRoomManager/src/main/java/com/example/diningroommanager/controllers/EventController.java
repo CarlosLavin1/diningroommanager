@@ -68,10 +68,13 @@ public class EventController {
     }
 
     @PostMapping(value = "/event/edit/{id}")
-    public String edit(Event event, Model model) {
-        eventRepo.save(event);
-
-        return "redirect:/events";
+    public String edit(BindingResult br, Event event, Model model) {
+        if(!br.hasErrors()){
+            eventRepo.save(event);
+            return "redirect:/events";
+        } else {
+            return "event/edit";
+        }
     }
 
     @GetMapping(value = "/event/delete/{id}")
@@ -80,6 +83,12 @@ public class EventController {
 
         if (item.isPresent()) {
             model.addAttribute("event", item.get());
+            var seatings = seatingRepo.getSeatingsByEvent_Id(item.get().getId());
+            if(!seatings.isEmpty()){
+                model.addAttribute("seatingCount", seatings.size());
+            }else {
+                model.addAttribute("seatingCount", 0);
+            }
         }
 
         return "event/delete";
