@@ -19,24 +19,30 @@
         </dd>
     </dl>
     <a th:href="@{/seating/create/{id}(id=${event.id})}" class="btn btn-primary">Add A Seating For This Event</a>
-    <hr>
-    <h2>Seatings For <span th:text="*{name}"></span></h2>
-    <table class="table-dark" th:unless="${event.seatings == null || event.seatings.size() == 0}">
-        <thead>
-            <tr>
-                <th>Start Time And Date</th>
-                <th>Manage</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="seating: ${event.seatings}">
-                <td><input type="datetime-local" th:value="${seating.startDateAndTime}"></td>
-                <td>
-                    <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-info">Details</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div th:unless="${event.seatings == null || event.seatings.size() == 0}">
+        <hr>
+        <h2>Seatings For <span th:text="*{name}"></span></h2>
+        <table class="table table-dark mt-3" th:unless="${event.seatings == null || event.seatings.size() == 0}">
+            <thead>
+                <tr>
+                    <th>Start Time And Date</th>
+                    <th>Manage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="seating: ${event.seatings}">
+                    <td><input type="datetime-local" th:value="${seating.startDateAndTime}"></td>
+                    <td>
+                        <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-info">Details</a> |
+                        <a th:href="@{/seating/edit/{id}(id=${seating.id})}" class="btn btn-warning">Edit</a> |
+                        <a th:href="@{/seating/delete/{id}(id=${seating.id})}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <h3 th:unless="${event.seatings != null && event.seatings.size() > 0}" class="font-weight-bold bg-danger mt-5 text-center rounded">There are no seatings for this event</h3>
+    <br>
     <a th:href="@{/}" class="btn btn-success mt-3">Go Back</a>
 </div>
 </body>

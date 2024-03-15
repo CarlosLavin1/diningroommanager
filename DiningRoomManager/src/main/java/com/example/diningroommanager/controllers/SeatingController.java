@@ -1,5 +1,6 @@
 package com.example.diningroommanager.controllers;
 
+import com.example.diningroommanager.entities.Event;
 import com.example.diningroommanager.entities.Seating;
 import com.example.diningroommanager.repositories.EventRepository;
 import com.example.diningroommanager.repositories.SeatingRepository;
@@ -63,5 +64,48 @@ public class SeatingController {
             model.addAttribute("seating", item.get());
 
         return "seating/detail";
+    }
+
+    @GetMapping(value = "/seating/edit/{id}")
+    public String edit(Model model, @PathVariable int id) {
+        var item = seatingRepo.findById(id);
+
+        if (item.isPresent()) {
+            model.addAttribute("seating", item.get());
+        }
+
+        return "seating/edit";
+    }
+
+    @PostMapping(value = "/seating/edit/{id}")
+    public String edit(BindingResult br, Seating seating, Model model) {
+        if(!br.hasErrors()){
+            seatingRepo.save(seating);
+            return "redirect:/seatings";
+        } else {
+            return "seating/edit";
+        }
+    }
+
+    @GetMapping(value = "/seating/delete/{id}")
+    public String delete(@PathVariable int id, Model model) {
+        var item = seatingRepo.findById(id);
+
+        if (item.isPresent()) {
+            model.addAttribute("seating", item.get());
+            var event = eventRepo.findById(item.get().getEvent().getId());
+            if(event.isPresent()){
+                model.addAttribute("event", event.get());
+            }
+        }
+
+        return "seating/delete";
+    }
+
+    @PostMapping(value = "/seating/delete/{id}")
+    public String delete(@PathVariable int id) {
+        seatingRepo.deleteById(id);
+
+        return "redirect:/events";
     }
 }

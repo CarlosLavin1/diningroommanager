@@ -10,10 +10,10 @@
 <div class="container">
     <header th:insert="~{nav :: navbar}"></header>
     <main class="pb-3" role="main">
-        <h2>Delete Event</h2>
+        <h2 class="text-center">Delete Event</h2>
         <hr/>
-        <h5>Are you sure you want to delete this event?</h5>
-        <p class="font-weight-bold">This action cannot be undone</p>
+        <h4 class="text-center">Are you sure you want to delete this event?</h4>
+        <p class="font-weight-bold bg-danger rounded p-2 text-center">This action cannot be undone</p>
         <dl class="row" th:object="${event}">
             <dt class="col-sm-2">
                 Name:
@@ -24,7 +24,7 @@
         </dl>
 
         <p>This event has <span th:text="${seatingCount}" class="italic font-weight-bold"></span> associated seating(s)</p>
-        <form action="@{/seating/delete/{id}(id=${seating.id})}" method="POST">
+        <form th:action="@{/event/delete/{id}(id=${event.id})}" method="POST">
             <input name="id" th:value="${event.id}" type="hidden">
             <div class="form-group">
                 <input class="btn btn-primary" type="submit" value="Delete"/>
