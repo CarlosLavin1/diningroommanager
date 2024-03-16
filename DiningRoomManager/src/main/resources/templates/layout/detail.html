@@ -27,17 +27,21 @@
             <dd class="col-sm-10">
                 <span th:text="*{description}"></span>
             </dd>
+            <dt class="col-sm-2">
+                Date created:
+            </dt>
+            <dd class="col-sm-10">
+                <span th:text="${#dates.format(layout.createdDate, 'yyyy-MM-dd hh:mm a')}"></span>
+            </dd>
         </dl>
 
-        <a th:href="@{/diningTable/create/{id}(id=${layout.id})}" class="btn btn-dark">Create Table</a>
+        <a th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-dark">Create Table</a>
 
         <div th:if="${tables != null and !tables.isEmpty()}">
             <table class="table" th:unless="${tables == null}">
                 <thead>
                 <tr>
                     <th>Number of seating</th>
-                </tr>
-                <tr>
                     <th>Manage</th>
                 </tr>
                 </thead>
@@ -47,7 +51,8 @@
                         <span th:text="${table.numberOfSeats}"></span>
                     </td>
                     <td>
-                        <a th:href="@{/table/edit/{id}(id=${id})}">Edit</a>
+                        <a th:href="@{/table/edit/{id}(id=${table.id})}">Edit</a> |
+                        <a th:href="@{/table/delete/{id}(id=${table.id})}">Delete</a>
                     </td>
                 </tr>
                 </tbody>

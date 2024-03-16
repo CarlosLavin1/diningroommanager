@@ -42,6 +42,12 @@ public class Layout {
         this.diningTables = diningTables;
     }
 
+    // Automatically create the date
+    @PrePersist
+    public void prePersist() {
+        this.createdDate = new Date();
+    }
+
 
     public int getId() {
         return id;

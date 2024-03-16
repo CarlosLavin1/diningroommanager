@@ -13,7 +13,7 @@
     <h1>Tables</h1>
 
 
-    <form th:action="@{diningTable/create}" th:object="${tables}" method="post">
+    <form th:action="@{/table/create/{id}(id=${tables.layout.id})}" th:object="${tables}" method="post">
 
         <!-- Layout id to associate the diningTable layout-->
         <input id="layout" type="hidden" th:field="*{layout}">

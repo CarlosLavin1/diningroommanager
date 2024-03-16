@@ -37,18 +37,32 @@ public class TableController {
     }
 
 
-    @GetMapping(value = "table/create")
-    public String create(Model model) {
-        model.addAttribute("tables", new DiningTable());
+    @GetMapping(value = "table/create/{id}")
+    public String create(Model model, @PathVariable int id) {
+        var layout = layoutRepository.findById(id).orElse(null);
+
+        if (layout != null){
+            var table = new DiningTable();
+
+            // Set the layout of the new DiningTable object
+            table.setLayout(layout);
+            model.addAttribute("tables", table);
+        }
+
         return "table/create";
     }
 
-    @PostMapping(value = "table/create")
-    public String create(@Valid DiningTable diningTable, BindingResult br) {
-        if (!br.hasErrors()) {
-            tableRepository.save(diningTable);
+    @PostMapping(value = "table/create/{id}")
+    public String create(@Valid DiningTable diningTable, @PathVariable int id, BindingResult br) {
+        var layout = layoutRepository.findById(id).orElse(null);
 
-            return "redirect:/table";
+        if (!br.hasErrors()) {
+            // Create new table
+            var newTable = new DiningTable(layout, diningTable.getNumberOfSeats());
+
+            tableRepository.save(newTable);
+
+            return "redirect:/layout/detail/" + id;
         } else {
             return "table/create";
         }
@@ -76,7 +90,6 @@ public class TableController {
 
     @GetMapping(value = "/table/detail/{id}")
     public String details(@PathVariable int id, Model model) {
-        // also fetch tables later on
         var table = tableRepository.findById(id);
 
         if (table.isPresent()) {
