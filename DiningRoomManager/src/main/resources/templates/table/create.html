@@ -1,11 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create Table</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
 </head>
 <body>
-    
+<div class="container">
+    <header th:insert="~{nav :: navbar}"></header>
+    <h1 class="text-center">Tables</h1>
+
+
+    <form th:action="@{/table/create/{id}(id=${tables.layout.id})}" th:object="${tables}" method="post">
+
+        <!-- Layout id to associate the diningTable layout-->
+        <input id="layout" type="hidden" th:field="*{layout}">
+
+        <div class="form-group">
+            <label for="seats" th:field="*{numberOfSeats}">Number of Seats</label>
+            <input class="form-control" id="seats" type="number" th:field="*{numberOfSeats}">
+            <div class="alert alert-warning" th:errors="*{numberOfSeats}"></div>
+        </div>
+        <input class="btn btn-dark" type="submit" value="Add Table">
+        <a th:href="@{/layout/detail/{id}(id=${tables.layout.id})}">Go back</a>
+    </form>
+</div>
 </body>
 </html>

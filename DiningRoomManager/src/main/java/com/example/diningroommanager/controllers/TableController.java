@@ -1,7 +1,6 @@
 package com.example.diningroommanager.controllers;
 
-import com.example.diningroommanager.entities.Layout;
-import com.example.diningroommanager.entities.Table;
+import com.example.diningroommanager.entities.DiningTable;
 import com.example.diningroommanager.repositories.LayoutRepository;
 import com.example.diningroommanager.repositories.TableRepository;
 import jakarta.validation.Valid;
@@ -38,18 +37,32 @@ public class TableController {
     }
 
 
-    @GetMapping(value = "table/create")
-    public String create(Model model) {
-        model.addAttribute("tables", new Table());
+    @GetMapping(value = "table/create/{id}")
+    public String create(Model model, @PathVariable int id) {
+        var layout = layoutRepository.findById(id).orElse(null);
+
+        if (layout != null){
+            var table = new DiningTable();
+
+            // Set the layout of the new DiningTable object
+            table.setLayout(layout);
+            model.addAttribute("tables", table);
+        }
+
         return "table/create";
     }
 
-    @PostMapping(value = "table/create")
-    public String create(@Valid Table table, BindingResult br) {
-        if (!br.hasErrors()) {
-            tableRepository.save(table);
+    @PostMapping(value = "table/create/{id}")
+    public String create(@Valid DiningTable diningTable, @PathVariable int id, BindingResult br) {
+        var layout = layoutRepository.findById(id).orElse(null);
 
-            return "redirect:/table";
+        if (!br.hasErrors()) {
+            // Create new table
+            var newTable = new DiningTable(layout, diningTable.getNumberOfSeats());
+
+            tableRepository.save(newTable);
+
+            return "redirect:/layout/detail/" + id;
         } else {
             return "table/create";
         }
@@ -68,16 +81,35 @@ public class TableController {
     }
 
     @PostMapping(value = "table/edit/{id}")
-    public String edit(Table table, Model model) {
+    public String edit(DiningTable diningTable, @PathVariable int id, BindingResult br, Model model) {
+        // Check for errors
+        if (!br.hasErrors()) {
 
-        tableRepository.save(table);
+            // Find the existing dining table
+            var existingTable = tableRepository.findById(id);
 
-        return "redirect:/table";
+            // Check if the table is present
+            if (existingTable.isPresent()){
+                // Get the table to update
+                var tableToUpdate = existingTable.get();
+
+                // Get the layout from the existing table
+                var layout = tableToUpdate.getLayout();
+
+                // Set and save the new number of seats
+                tableToUpdate.setNumberOfSeats(diningTable.getNumberOfSeats());
+                tableRepository.save(tableToUpdate);
+
+                // Redirect back to the detail page
+                return "redirect:/layout/detail/" + layout.getId();
+            }
+        }
+
+        return "table/edit";
     }
 
     @GetMapping(value = "/table/detail/{id}")
     public String details(@PathVariable int id, Model model) {
-        // also fetch tables later on
         var table = tableRepository.findById(id);
 
         if (table.isPresent()) {
@@ -100,9 +132,23 @@ public class TableController {
 
     @PostMapping(value = "/table/delete/{id}")
     public String deleteConfirm(@PathVariable int id) {
+        // Find the existing dining table
+        var table = tableRepository.findById(id);
 
-        tableRepository.deleteById(id);
+        if (table.isPresent()){
 
-        return "redirect:/table";
+            // Get the dining tables
+            var diningTable = table.get();
+
+            // get the layouts
+            var layout = diningTable.getLayout();
+
+            tableRepository.deleteById(id);
+
+            // Redirect back to the detail page
+            return "redirect:/layout/detail/" + layout.getId();
+        }
+
+        return "table/delete";
     }
 }

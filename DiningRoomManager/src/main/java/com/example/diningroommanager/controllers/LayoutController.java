@@ -1,7 +1,6 @@
 package com.example.diningroommanager.controllers;
 
 import com.example.diningroommanager.entities.Layout;
-import com.example.diningroommanager.entities.Table;
 import com.example.diningroommanager.repositories.LayoutRepository;
 import com.example.diningroommanager.repositories.TableRepository;
 import jakarta.validation.Valid;
@@ -11,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.List;
 
 @Controller
 public class LayoutController {
@@ -40,7 +37,7 @@ public class LayoutController {
 
     @GetMapping(value = "layout/create")
     public String create(Model model) {
-        model.addAttribute("layouts", new Layout());
+        model.addAttribute("layout", new Layout());
         return "layout/create";
     }
 
@@ -64,7 +61,7 @@ public class LayoutController {
             model.addAttribute("layout", layout.get());
         }
 
-        return "layput/edit";
+        return "layout/edit";
     }
 
     @PostMapping(value = "layout/edit/{id}")
@@ -77,8 +74,10 @@ public class LayoutController {
 
     @GetMapping(value = "/layout/detail/{id}")
     public String details(@PathVariable int id, Model model) {
-        // also fetch tables later on
         var layout = layoutRepository.findById(id);
+
+        var tables = tableRepository.findByLayout_Id(id);
+        model.addAttribute("tables", tables);
 
         if (layout.isPresent()) {
             model.addAttribute("layout", layout.get());

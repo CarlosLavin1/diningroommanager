@@ -2,7 +2,6 @@ package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -15,33 +14,38 @@ public class Layout {
     @Column(name = "layoutId")
     private int id;
 
-    @NotBlank
+    @NotBlank(message = "Name is required")
     private String name;
     private String description;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    @NotNull
     @OneToMany(mappedBy = "layout", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Table> tables;
+    private List<DiningTable> diningTables;
 
     public Layout() {
     }
 
-    public Layout(String name, String description, Date createdDate, List<Table> tables) {
+    public Layout(String name, String description, Date createdDate, List<DiningTable> diningTables) {
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
-        this.tables = tables;
+        this.diningTables = diningTables;
     }
 
-    public Layout(int id, String name, String description, Date createdDate, List<Table> tables) {
+    public Layout(int id, String name, String description, Date createdDate, List<DiningTable> diningTables) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
-        this.tables = tables;
+        this.diningTables = diningTables;
+    }
+
+    // Automatically create the date
+    @PrePersist
+    public void prePersist() {
+        this.createdDate = new Date();
     }
 
 
@@ -77,11 +81,11 @@ public class Layout {
         this.createdDate = createdDate;
     }
 
-    public List<Table> getTables() {
-        return tables;
+    public List<DiningTable> getTables() {
+        return diningTables;
     }
 
-    public void setTables(List<Table> tables) {
-        this.tables = tables;
+    public void setTables(List<DiningTable> diningTables) {
+        this.diningTables = diningTables;
     }
 }
