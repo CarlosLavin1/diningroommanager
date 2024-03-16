@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit Event</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
 </head>
-<body>
-
+<body class="bg-secondary">
+<div class="container">
+    <header th:insert="~{nav :: navbar}"></header>
+    <main class="pb-3" role="main">
+        <h2>Create An Event</h2>
+        <hr/>
+        <form method="post" th:action="@{/event/create}" th:object="${event}">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-group">
+                <label class="form-label">Start Date:</label>
+                <input class="form-control" th:field="*{startDate}" type="date"/>
+                <div class="alert alert-warning" th:errors="*{startDate}"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">End Date:</label>
+                <input class="form-control" th:field="*{endDate}"  type="date"/>
+                <div class="alert alert-warning" th:errors="*{endDate}"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Name:</label>
+                <input class="form-control" th:field="*{name}"/>
+                <div class="alert alert-warning" th:errors="*{name}"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description:</label>
+                <input class="form-control" th:field="*{description}"/>
+                <div class="alert alert-warning" th:errors="*{description}"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Price:</label>
+                <input class="form-control" th:field="*{price}"/>
+                <div class="alert alert-warning" th:errors="*{price}"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Seating Duration (minutes):</label>
+                <input class="form-control" th:field="*{seatingDuration}" type="number"/>
+                <div class="alert alert-warning" th:errors="*{seatingDuration}"></div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Save"/>
+        </form>
+        <a th:href="@{/}" class="btn btn-success mt-3">Go Back</a>
+    </main>
+</div>
 </body>
 </html>
