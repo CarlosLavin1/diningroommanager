@@ -4,9 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Layout</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
 </head>
 <body>
-    <h1>Layout index working</h1>
+    <div class="container">
+        <header th:insert="~{nav :: navbar}"></header>
 
+        <h1 class="text-center font-weight-bold">Layout</h1>
+
+        <a th:href="@{/layout/create}" class="btn btn-primary">Create Layout</a>
+        <table class="table mt-3" th:unless="${layouts == null}">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Manage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="layout: ${layouts}">
+                <td>
+                    <span th:text="${layout.name}"></span>
+                </td>
+                <td>
+                    <span th:text="${layout.description}"></span>
+                </td>
+                <td>
+                    <a th:href="@{/layout/detail/{id}(id=${layout.id})}">Details</a> |
+                    <a th:href="@{/layout/edit/{id}(id=${layout.id})}">Edit</a> |
+                    <a th:href="@{/layout/delete/{id}(id=${layout.id})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <p class="text-center" th:if="${layouts == null || layouts.isEmpty()}">
+            No Layout Found.
+        </p>
+    </div>
 </body>
 </html>

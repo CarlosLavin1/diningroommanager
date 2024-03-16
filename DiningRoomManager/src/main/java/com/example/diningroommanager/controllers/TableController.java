@@ -1,7 +1,6 @@
 package com.example.diningroommanager.controllers;
 
-import com.example.diningroommanager.entities.Layout;
-import com.example.diningroommanager.entities.Table;
+import com.example.diningroommanager.entities.DiningTable;
 import com.example.diningroommanager.repositories.LayoutRepository;
 import com.example.diningroommanager.repositories.TableRepository;
 import jakarta.validation.Valid;
@@ -40,14 +39,14 @@ public class TableController {
 
     @GetMapping(value = "table/create")
     public String create(Model model) {
-        model.addAttribute("tables", new Table());
+        model.addAttribute("tables", new DiningTable());
         return "table/create";
     }
 
     @PostMapping(value = "table/create")
-    public String create(@Valid Table table, BindingResult br) {
+    public String create(@Valid DiningTable diningTable, BindingResult br) {
         if (!br.hasErrors()) {
-            tableRepository.save(table);
+            tableRepository.save(diningTable);
 
             return "redirect:/table";
         } else {
@@ -68,9 +67,9 @@ public class TableController {
     }
 
     @PostMapping(value = "table/edit/{id}")
-    public String edit(Table table, Model model) {
+    public String edit(DiningTable diningTable, Model model) {
 
-        tableRepository.save(table);
+        tableRepository.save(diningTable);
 
         return "redirect:/table";
     }
