@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create diningTable</title>
+    <title>Create Table</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.js}"></script>
 </head>
 <body>
 <div class="container">
     <header th:insert="~{nav :: navbar}"></header>
-    <h1>Tables</h1>
+    <h1 class="text-center">Tables</h1>
 
 
     <form th:action="@{/table/create/{id}(id=${tables.layout.id})}" th:object="${tables}" method="post">
@@ -20,7 +20,7 @@
 
         <div class="form-group">
             <label for="seats" th:field="*{numberOfSeats}">Number of Seats</label>
-            <input id="seats" type="number" th:field="*{numberOfSeats}">
+            <input class="form-control" id="seats" type="number" th:field="*{numberOfSeats}">
             <div class="alert alert-warning" th:errors="*{numberOfSeats}"></div>
         </div>
         <input class="btn btn-dark" type="submit" value="Add Table">
