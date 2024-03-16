@@ -1,10 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Edit a Seating</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
 </head>
-<body>
-
+<body class="bg-secondary">
+<div class="container" th:object="${seating}">
+    <header th:insert="~{nav :: navbar}"></header>
+    <h2 class="text-center">Edit A Seating</h2>
+    <hr>
+    <form method="POST" th:object="${seating}" th:action="@{/seating/create/{id}(id=${seating.event.id})}">
+        <h3 class="text-center">Event: <span th:text="${seating.event.name}"></span></h3>
+        <h4 class="text-center">Event Start Date: <input class="rounded" th:value="${seating.event.startDate}" readonly></input></h4>
+        <h4 class="text-center">Event End Date: <input class="rounded" th:value="${seating.event.endDate}" readonly></input></h4>
+        <div class="form-group">
+            <label class="form-label">Start Date And Time:</label>
+            <input class="form-control" th:field="*{startDateAndTime}" type="datetime-local"/>
+            <div class="alert alert-warning" th:errors="*{startDateAndTime}"></div>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Save"/>
+    </form>
+    <a th:href="@{/event/details/{id}(id=${seating.event.id})}" class="btn btn-success mt-3">Go Back</a>
+</div>
 </body>
 </html>

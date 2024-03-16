@@ -25,7 +25,7 @@
                 Date And Time:
             </dt>
             <dd class="col-sm-10">
-                <input disabled type="datetime-local" th:value="*{startDateAndTime}"/>
+                <input class="rounded" readonly type="datetime-local" th:value="*{startDateAndTime}"/>
             </dd>
         </dl>
 
@@ -35,7 +35,7 @@
                 <input class="btn btn-primary" type="submit" value="Delete"/>
             </div>
         </form>
-        <a th:href="@{/}" class="btn btn-success mt-3">Go Back</a>
+        <a th:href="@{/event/details/{id}(id=${seating.event.id})}" class="btn btn-success mt-3">Go Back</a>
     </main>
 </div>
 </body>

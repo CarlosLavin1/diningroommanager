@@ -34,7 +34,7 @@ public class SeatingController {
     public String create(Model model, @PathVariable int id) {
         var event = eventRepo.findById(id);
         if (event.isPresent())
-            model.addAttribute("event", event);
+            model.addAttribute("event", event.get());
         model.addAttribute("seating", new Seating());
 
         return "seating/create";
