@@ -37,7 +37,7 @@ public class LayoutController {
 
     @GetMapping(value = "layout/create")
     public String create(Model model) {
-        model.addAttribute("layouts", new Layout());
+        model.addAttribute("layout", new Layout());
         return "layout/create";
     }
 

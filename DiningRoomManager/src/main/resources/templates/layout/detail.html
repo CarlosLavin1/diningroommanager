@@ -35,7 +35,6 @@
             </dd>
         </dl>
 
-        <a th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-dark">Create Table</a>
 
         <div th:if="${tables != null and !tables.isEmpty()}">
             <table class="table" th:unless="${tables == null}">
@@ -60,6 +59,7 @@
 
         </div>
 
+        <a th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-dark">Create Table</a>
         <div th:if="${tables == null or tables.isEmpty()}">
             No tables for this layout yet!
         </div>

@@ -14,7 +14,7 @@ public class Layout {
     @Column(name = "layoutId")
     private int id;
 
-    @NotBlank
+    @NotBlank(message = "Name is required")
     private String name;
     private String description;
 

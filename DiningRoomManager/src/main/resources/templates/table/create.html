@@ -24,6 +24,7 @@
             <div class="alert alert-warning" th:errors="*{numberOfSeats}"></div>
         </div>
         <input class="btn btn-dark" type="submit" value="Add Table">
+        <a th:href="@{/layout/detail/{id}(id=${tables.layout.id})}">Go back</a>
     </form>
 </div>
 </body>

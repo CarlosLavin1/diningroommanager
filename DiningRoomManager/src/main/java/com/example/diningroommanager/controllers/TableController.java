@@ -81,11 +81,31 @@ public class TableController {
     }
 
     @PostMapping(value = "table/edit/{id}")
-    public String edit(DiningTable diningTable, Model model) {
+    public String edit(DiningTable diningTable, @PathVariable int id, BindingResult br, Model model) {
+        // Check for errors
+        if (!br.hasErrors()) {
 
-        tableRepository.save(diningTable);
+            // Find the existing dining table
+            var existingTable = tableRepository.findById(id);
 
-        return "redirect:/table";
+            // Check if the table is present
+            if (existingTable.isPresent()){
+                // Get the table to update
+                var tableToUpdate = existingTable.get();
+
+                // Get the layout from the existing table
+                var layout = tableToUpdate.getLayout();
+
+                // Set and save the new number of seats
+                tableToUpdate.setNumberOfSeats(diningTable.getNumberOfSeats());
+                tableRepository.save(tableToUpdate);
+
+                // Redirect back to the detail page
+                return "redirect:/layout/detail/" + layout.getId();
+            }
+        }
+
+        return "table/edit";
     }
 
     @GetMapping(value = "/table/detail/{id}")
@@ -112,9 +132,23 @@ public class TableController {
 
     @PostMapping(value = "/table/delete/{id}")
     public String deleteConfirm(@PathVariable int id) {
+        // Find the existing dining table
+        var table = tableRepository.findById(id);
 
-        tableRepository.deleteById(id);
+        if (table.isPresent()){
 
-        return "redirect:/table";
+            // Get the dining tables
+            var diningTable = table.get();
+
+            // get the layouts
+            var layout = diningTable.getLayout();
+
+            tableRepository.deleteById(id);
+
+            // Redirect back to the detail page
+            return "redirect:/layout/detail/" + layout.getId();
+        }
+
+        return "table/delete";
     }
 }
