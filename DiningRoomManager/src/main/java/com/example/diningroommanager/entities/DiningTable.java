@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Table {
+@Table(name = "dining_table")
+public class DiningTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tableId")
@@ -18,15 +19,15 @@ public class Table {
     @NotNull
     private int numberOfSeats;
 
-    public Table() {
+    public DiningTable() {
     }
 
-    public Table(Layout layout, int numberOfSeats) {
+    public DiningTable(Layout layout, int numberOfSeats) {
         this.layout = layout;
         this.numberOfSeats = numberOfSeats;
     }
 
-    public Table(int id, Layout layout, int numberOfSeats) {
+    public DiningTable(int id, Layout layout, int numberOfSeats) {
         this.id = id;
         this.layout = layout;
         this.numberOfSeats = numberOfSeats;
