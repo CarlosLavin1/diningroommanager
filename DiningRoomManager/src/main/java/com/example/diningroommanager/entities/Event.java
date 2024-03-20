@@ -36,6 +36,20 @@ public class Event {
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)//cascade makes all related seatings get deleted if event gets deleted
     private List<Seating> seatings;
 
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "layoutId", foreignKey = @ForeignKey(name = "FK_Layout_Event"))
+    private Layout layout;
+
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(Layout layout) {
+        this.layout = layout;
+    }
+
     public Event() {
     }
 
@@ -59,6 +73,7 @@ public class Event {
         this.price = price;
         this.seatings = seatings;
     }
+
 
     public int getId() {
         return id;
