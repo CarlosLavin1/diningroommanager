@@ -3,6 +3,7 @@ package com.example.diningroommanager.controllers;
 import com.example.diningroommanager.entities.Event;
 import com.example.diningroommanager.entities.Layout;
 import com.example.diningroommanager.repositories.EventRepository;
+import com.example.diningroommanager.repositories.LayoutRepository;
 import com.example.diningroommanager.repositories.SeatingRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class EventController {
     private final EventRepository eventRepo;
     private final SeatingRepository seatingRepo;
+    private final LayoutRepository layoutRepo;
 
-    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo) {
+    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo) {
         this.eventRepo = eventRepo;
         this.seatingRepo = seatingRepo;
+        this.layoutRepo = layoutRepo;
     }
 
     @GetMapping(value = {"/events", "/"})
@@ -33,7 +36,7 @@ public class EventController {
     @GetMapping(value = "/event/details/{id}")
     public String details(Model model, @PathVariable int id) {
         var item = eventRepo.findById(id);
-        if(item.isPresent())
+        if (item.isPresent())
             model.addAttribute("event", item.get());
 
         return "event/detail";
@@ -41,19 +44,45 @@ public class EventController {
 
     @GetMapping(value = "/event/create")
     public String create(Model model) {
-        model.addAttribute("event", new Event());
+        var event = new Event();
+        event.setLayout(new Layout());
+
+        // find all the layouts and to the models attributes
+        var layouts = layoutRepo.findAll();
+
+        model.addAttribute("event", event);
+        model.addAttribute("layouts", layouts);
+
         return "event/create";
     }
 
     @PostMapping(value = "/event/create")
-    public String create(@Valid Event event, BindingResult br) {
-        if (!br.hasErrors()) {
-            eventRepo.save(event);
+    public String create(@Valid Event event, BindingResult br, Model model) {
+        //  Check if a layout is selected
+        if (event.getLayout() != null && event.getLayout().getId() != null) {
 
-            return "redirect:/events";
+            if (!br.hasErrors()) {
+                // Find the selected layout otherwise return null
+                var layout = layoutRepo.findById(event.getLayout().getId()).orElse(null);
+
+                // check if layout not null
+                if (layout != null) {
+                    // set the layout to event and save
+                    event.setLayout(layout);
+                    eventRepo.save(event);
+
+                    return "redirect:/events";
+                }
+            }
         } else {
-            return "event/create";
+            // Add an error message to the model
+            model.addAttribute("layoutErr", "Please select a layout");
         }
+
+        // Repopulate the layouts
+        model.addAttribute("layouts", layoutRepo.findAll());
+
+        return "event/create";
     }
 
     @GetMapping(value = "/event/edit/{id}")
@@ -69,7 +98,7 @@ public class EventController {
 
     @PostMapping(value = "/event/edit/{id}")
     public String edit(BindingResult br, Event event, Model model) {
-        if(!br.hasErrors()){
+        if (!br.hasErrors()) {
             eventRepo.save(event);
             return "redirect:/events";
         } else {
@@ -84,9 +113,9 @@ public class EventController {
         if (item.isPresent()) {
             model.addAttribute("event", item.get());
             var seatings = seatingRepo.getSeatingsByEvent_Id(item.get().getId());
-            if(!seatings.isEmpty()){
+            if (!seatings.isEmpty()) {
                 model.addAttribute("seatingCount", seatings.size());
-            }else {
+            } else {
                 model.addAttribute("seatingCount", 0);
             }
         }

@@ -37,7 +37,7 @@ public class Event {
     private List<Seating> seatings;
 
 
-    @NotNull
+    @NotNull(message = "Please select a layout")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "layoutId", foreignKey = @ForeignKey(name = "FK_Layout_Event"))
     private Layout layout;
@@ -53,7 +53,8 @@ public class Event {
     public Event() {
     }
 
-    public Event(LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings) {
+
+    public Event(LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings, Layout layout) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.seatingDuration = seatingDuration;
@@ -61,9 +62,10 @@ public class Event {
         this.description = description;
         this.price = price;
         this.seatings = seatings;
+        this.layout = layout;
     }
 
-    public Event(int id, LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings) {
+    public Event(int id, LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings, Layout layout) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -72,6 +74,7 @@ public class Event {
         this.description = description;
         this.price = price;
         this.seatings = seatings;
+        this.layout = layout;
     }
 
 
