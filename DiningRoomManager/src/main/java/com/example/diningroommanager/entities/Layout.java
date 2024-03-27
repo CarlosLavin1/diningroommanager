@@ -55,7 +55,7 @@ public class Layout {
         this.events = events;
     }
 
-    public Layout(int id, String name, String description, Date createdDate, List<DiningTable> diningTables, List<Event> events) {
+    public Layout(Integer id, String name, String description, Date createdDate, List<DiningTable> diningTables, List<Event> events) {
         this.id = id;
         this.name = name;
         this.description = description;

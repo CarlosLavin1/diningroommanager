@@ -36,8 +36,11 @@ public class EventController {
     @GetMapping(value = "/event/details/{id}")
     public String details(Model model, @PathVariable int id) {
         var item = eventRepo.findById(id);
-        if (item.isPresent())
+
+        if (item.isPresent()) {
             model.addAttribute("event", item.get());
+            model.addAttribute("layout", item.get().getLayout());
+        }
 
         return "event/detail";
     }
@@ -88,22 +91,40 @@ public class EventController {
     @GetMapping(value = "/event/edit/{id}")
     public String edit(Model model, @PathVariable int id) {
         var item = eventRepo.findById(id);
+        var layouts = layoutRepo.findAll();
 
         if (item.isPresent()) {
             model.addAttribute("event", item.get());
+            model.addAttribute("layouts", layouts);
         }
 
         return "event/edit";
     }
 
     @PostMapping(value = "/event/edit/{id}")
-    public String edit(BindingResult br, Event event, Model model) {
+    public String edit(@PathVariable int id, BindingResult br, Event events, Model model) {
         if (!br.hasErrors()) {
-            eventRepo.save(event);
-            return "redirect:/events";
-        } else {
-            return "event/edit";
+
+            // Check if a layout is selected
+            if (events.getLayout() != null && events.getLayout().getId() != null) {
+                // Find the selected layout otherwise return null
+                var layout = layoutRepo.findById(events.getLayout().getId()).orElse(null);
+
+                // Check if layout not null
+                if (layout != null) {
+
+                    // Update the event and save
+                    eventRepo.update(id, events.getName(), events.getStartDate(), events.getEndDate(),
+                            events.getSeatingDuration(), events.getDescription(), events.getPrice(), layout.getId());
+
+
+                    return "redirect:/events";
+                }
+            } else {
+                model.addAttribute("layoutErr", "Please select a layout");
+            }
         }
+        return "event/edit";
     }
 
     @GetMapping(value = "/event/delete/{id}")
