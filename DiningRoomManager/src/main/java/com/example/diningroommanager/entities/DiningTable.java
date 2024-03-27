@@ -27,10 +27,16 @@ public class DiningTable {
         this.numberOfSeats = numberOfSeats;
     }
 
+
     public DiningTable(int id, Layout layout, int numberOfSeats) {
         this.id = id;
         this.layout = layout;
         this.numberOfSeats = numberOfSeats;
+    }
+
+    @Override
+    public String toString() {
+        return "Table ID: " + this.id + ", Seats: " + this.numberOfSeats;
     }
 
     public int getId() {

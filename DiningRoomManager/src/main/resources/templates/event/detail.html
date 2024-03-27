@@ -47,6 +47,20 @@
         <dd class="col-sm-10">
             <span th:text="*{#numbers.formatCurrency(price)}"> </span>
         </dd>
+        <dt class="col-sm-2">
+            Layout:
+        </dt>
+        <dd class="col-sm-10">
+            <span th:text="*{layout.name}"> </span>
+        </dd>
+        <dt class="col-sm-2">
+            Layout Table:
+        </dt>
+        <dd class="col-sm-10">
+            <ul th:each="table : *{layout.tables}">
+                <li th:text="${table}"></li>
+            </ul>
+        </dd>
     </dl>
     <a th:href="@{/seating/create/{id}(id=${event.id})}" class="btn btn-primary">Add A Seating For This Event</a>
 <!--    EVENT SEATINGS-->

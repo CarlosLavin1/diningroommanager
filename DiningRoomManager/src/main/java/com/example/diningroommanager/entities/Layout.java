@@ -2,6 +2,7 @@ package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Layout {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "layoutId")
-    private int id;
+    private Integer id;
 
     @NotBlank(message = "Name is required")
     private String name;
@@ -24,22 +25,43 @@ public class Layout {
     @OneToMany(mappedBy = "layout", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DiningTable> diningTables;
 
+    @OneToMany(mappedBy = "layout", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Event> events;
+
+    public List<DiningTable> getDiningTables() {
+        return diningTables;
+    }
+
+    public void setDiningTables(List<DiningTable> diningTables) {
+        this.diningTables = diningTables;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
     public Layout() {
     }
 
-    public Layout(String name, String description, Date createdDate, List<DiningTable> diningTables) {
+    public Layout(String name, String description, Date createdDate, List<DiningTable> diningTables, List<Event> events) {
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
         this.diningTables = diningTables;
+        this.events = events;
     }
 
-    public Layout(int id, String name, String description, Date createdDate, List<DiningTable> diningTables) {
+    public Layout(Integer id, String name, String description, Date createdDate, List<DiningTable> diningTables, List<Event> events) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
         this.diningTables = diningTables;
+        this.events = events;
     }
 
     // Automatically create the date
@@ -49,11 +71,11 @@ public class Layout {
     }
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
