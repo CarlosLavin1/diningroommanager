@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Seating {
@@ -19,6 +20,9 @@ public class Seating {
     @NotNull(message = "Start date and time is required")
     private LocalDateTime startDateAndTime;
 
+    @OneToMany(mappedBy = "seating", fetch = FetchType.LAZY, cascade = CascadeType.ALL)//cascade makes all related seatings get deleted if event gets deleted
+    private List<ReservationRequest> reservationRequests;
+
     public Seating(int id, Event event, LocalDateTime startDateAndTime) {
         this.id = id;
         this.event = event;
@@ -26,6 +30,14 @@ public class Seating {
     }
 
     public Seating() {
+    }
+
+    public List<ReservationRequest> getReservationRequests() {
+        return reservationRequests;
+    }
+
+    public void setReservationRequests(List<ReservationRequest> reservationRequests) {
+        this.reservationRequests = reservationRequests;
     }
 
     public int getId() {

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservations</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
+</head>
+<body class="bg-secondary">
+<!--    list of reservations for selected event-->
+<div class="container">
+    <header th:insert="~{nav :: navbar}"></header>
+    <div >
+        <h2 th:unless="${reservations == null || reservations.size() == 0}" class="text-center font-weight-bold">Reservations for <span th:text="${reservations[0].seating.event.name}"></span></h2>
+
+        <div class="text-center">
+            <h2 class="text-center mb-3">Filter by status</h2>
+            <div class="row justify-content-end">
+                <form method="GET" th:action="@{/res/filtered/{id}/{filter}(id=${eventId}, filter=${resPending})}" class="col-2">
+                    <input class="btn btn-primary" type="submit" value="Pending"/>
+                </form>
+                <form method="GET" th:action="@{/res/filtered/{id}/{filter}(id=${eventId}, filter=${resApproved})}" class="col-2">
+                    <input class="btn btn-primary" type="submit" value="Approved"/>
+                </form>
+                <form method="GET" th:action="@{/res/filtered/{id}/{filter}(id=${eventId}, filter=${resDenied})}" class="col-2">
+                    <input class="btn btn-primary" type="submit" value="Denied"/>
+                </form>
+                <form method="GET" th:action="@{/res/index/{id}(id=${eventId})}" class="col-2">
+                    <input class="btn btn-primary" type="submit" value="All"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <h2 class="text-center font-weight-bold" th:unless="${reservations != null && reservations.size() > 0}">This event has no matching reservations</h2>
+    <table class="table table-dark mt-3" th:unless="${reservations == null || reservations.size() == 0}">
+        <thead>
+        <tr>
+            <th class="text-info">Seating Date And Time</th>
+            <th class="text-info">Full Name</th>
+            <th class="text-info">Email</th>
+            <th class="text-info">Group Size</th>
+            <th class="text-info">Status</th>
+            <th class="text-info">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="res: ${reservations}">
+            <td>
+                <span th:text="${res.seating.startDateAndTime.toString()}"></span>
+            </td>
+            <td>
+                <span th:text="*{res.firstName}"></span> <span th:text="*{res.lastName}"></span>
+            </td>
+            <td>
+                <span th:text="*{res.email}"></span>
+            </td>
+            <td>
+                <span th:text="*{res.groupSize}"></span>
+            </td>
+            <td>
+                <span th:text="*{res.status.display}"></span>
+            </td>
+            <td>
+                <a th:href="@{/res/detail/{id}(id=${res.id})}" class="btn btn-info">Details</a> |
+                <a th:href="@{/res/edit/{id}(id=${res.id})}" class="btn btn-warning">Edit</a> |
+                <a th:href="@{/res/delete/{id}(id=${res.id})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h4 th:unless="${reservations != null}" class="text-center text-warning">No Reservations In Database</h4>
+    <a th:href="@{/res/index/{id}(id=${eventId})}" class="btn btn-info">Go Back</a>
+</div>
+</body>
+</html>
