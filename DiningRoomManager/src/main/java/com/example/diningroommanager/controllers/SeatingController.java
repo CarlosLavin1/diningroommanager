@@ -52,7 +52,8 @@ public class SeatingController {
             return "redirect:/event/details/{id}";
         } else {
             var event = eventRepo.findById(id);
-            model.addAttribute("event", event);
+            if(event.isPresent())
+                model.addAttribute("event", event.get());
             return "seating/create";
         }
     }

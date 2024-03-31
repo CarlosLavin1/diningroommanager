@@ -49,6 +49,7 @@
         </dd>
     </dl>
     <a th:href="@{/seating/create/{id}(id=${event.id})}" class="btn btn-primary">Add A Seating For This Event</a>
+    <a th:href="@{/res/index/{id}(id=${event.id})}" class="btn btn-success">Reservations</a>
 <!--    EVENT SEATINGS-->
     <div th:unless="${event.seatings == null || event.seatings.size() == 0}">
         <hr>
@@ -65,7 +66,9 @@
                     <td><input type="datetime-local" th:value="${seating.startDateAndTime}"></td>
                     <td>
                         <a th:href="@{/seating/edit/{id}(id=${seating.id})}" class="btn btn-warning">Edit</a> |
-                        <a th:href="@{/seating/delete/{id}(id=${seating.id})}" class="btn btn-danger">Delete</a>
+                        <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-info">Details</a> |
+                        <a th:href="@{/seating/delete/{id}(id=${seating.id})}" class="btn btn-danger">Delete</a> |
+                        <a th:href="@{/res/create/{id}(id=${seating.id})}" class="btn btn-primary">Request Reservation</a>
                     </td>
                 </tr>
             </tbody>
