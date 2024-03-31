@@ -17,7 +17,8 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Transactional
     @Query("update Event e set e.name = :name, e.startDate = :startDate, e.endDate = :endDate, " +
             "e.seatingDuration = :seatingDuration, e.description = :description, e.price = :price, " +
-            "e.layout = (select l from Layout l where l.id = :layoutId) " +
+            "e.layout = (select l from Layout l where l.id = :layoutId), " +
+            "e.menu = (select m from Menu m where m.id = :menuId)" +
             "where e.id = :id ")
 
     void update(@Param("id")int id,
@@ -27,5 +28,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                 @Param("seatingDuration") Integer seatingDuration,
                 @Param("description") String description,
                 @Param("price") Double price,
-                @Param("layoutId") int layoutId);
+                @Param("layoutId") int layoutId,
+                @Param("menuId") int menuId);
 }

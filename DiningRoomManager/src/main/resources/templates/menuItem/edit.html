@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Menu Item</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
+</head>
+<body class="bg-secondary">
+<div class="container">
+    <header th:insert="~{nav :: navbar}"></header>
+
+    <h1 class="text-center text-white">Edit Menu Item</h1>
+    <h3 class="text-center text-white">For Menu name:
+        <span class="text-info font-weight-bold shadow" th:text="${menuItem.menu.name}"></span>
+    </h3>
+
+    <hr>
+
+    <div class="d-flex justify-content-center">
+        <form th:action="@{/menuItem/edit/{id}(id=${menuItem.id})}" th:object="${menuItem}" method="post">
+            <input type="hidden" th:field="${menuItem.menu.id}">
+
+            <div class="form-group">
+                <label for="name" th:field="*{name}">Name:</label>
+                <input id="name" th:field="*{name}" class="form-control">
+                <div class="alert alert-warning" th:errors="*{name}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="desc" class="form-label">Description:</label>
+                <textarea class="form-control" id="desc" type="text" th:field="*{description}" cols="80" rows="5"></textarea>
+            </div>
+
+            <input class="btn btn-dark" type="submit" value="Save Changes">
+            <a th:href="@{/menu/detail/{id}(id=${menuItem.menu.id})}">Go back</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

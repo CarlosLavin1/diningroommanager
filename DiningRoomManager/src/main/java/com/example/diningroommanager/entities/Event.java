@@ -42,6 +42,19 @@ public class Event {
     @JoinColumn(name = "layoutId", foreignKey = @ForeignKey(name = "FK_Layout_Event"))
     private Layout layout;
 
+    @NotNull(message = "Please select a menu")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menuId", foreignKey = @ForeignKey(name = "FK_Menu_Event"))
+    private Menu menu;
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
     public Layout getLayout() {
         return layout;
     }
@@ -54,7 +67,7 @@ public class Event {
     }
 
 
-    public Event(LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings, Layout layout) {
+    public Event(LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings, Layout layout, Menu menu) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.seatingDuration = seatingDuration;
@@ -63,9 +76,10 @@ public class Event {
         this.price = price;
         this.seatings = seatings;
         this.layout = layout;
+        this.menu = menu;
     }
 
-    public Event(int id, LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings, Layout layout) {
+    public Event(int id, LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Seating> seatings, Layout layout, Menu menu) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -75,6 +89,7 @@ public class Event {
         this.price = price;
         this.seatings = seatings;
         this.layout = layout;
+        this.menu = menu;
     }
 
 

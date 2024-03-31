@@ -50,7 +50,15 @@
                     <option value="">Select a layout</option>
                     <option th:each="layout : ${layouts}" th:value="${layout.id}" th:text="${layout.name}"></option>
                 </select>
-<!--                <div class="alert alert-warning" th:if="${layoutErr}" th:text="${layoutErr}"></div>-->
+                <div class="alert alert-warning" th:if="${layoutErr}" th:text="${layoutErr}"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Menu:</label>
+                <select class="form-control" th:field="*{menu.id}">
+                    <option value="">Select a Menu</option>
+                    <option th:each="menu : ${menus}" th:value="${menu.id}" th:text="${menu.name}"></option>
+                </select>
+                <div class="alert alert-warning" th:if="${menuErr}" th:text="${menuErr}"></div>
             </div>
             <input class="btn btn-primary" type="submit" value="Save"/>
         </form>
