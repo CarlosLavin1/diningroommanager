@@ -9,6 +9,7 @@ import com.example.diningroommanager.repositories.SeatingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,8 +31,16 @@ public class EventControllerAPI {
     }
 
     @GetMapping("/api/events")
-    public ResponseEntity<List<EventDetailsDTO>> getEventsWithDetails(){
+    public ResponseEntity<List<EventDetailsDTO>> getAllEventsWithDetails(){
         var events = eventRepo.findAll();
         return new ResponseEntity<>(convertToEventDetailsDTOList(events), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/event/{id}")
+    public ResponseEntity<EventDetailsDTO> getEventWithDetailsById(@PathVariable int id){
+        var item = eventRepo.findById(id);
+        if(item.isPresent())
+            return new ResponseEntity<>(convertToEventDetailsDTO(item.get()), HttpStatus.OK);
+        return null;
     }
 }
