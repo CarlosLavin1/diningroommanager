@@ -1,9 +1,6 @@
 package com.example.diningroommanager.dtos;
 
-import com.example.diningroommanager.entities.Layout;
 import com.example.diningroommanager.entities.Menu;
-import com.example.diningroommanager.entities.Seating;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -32,17 +29,16 @@ public class EventDetailsDTO {
     @Positive(message = "Price can't be negative")
     private Double price;
 
-    private List<Integer> seatingIds;
+    private List<SeatingDTO> seatings;
 
-    private Integer layoutId;
+    private MenuDTO menu;
 
-
-    private Integer menuId;
+    //private List<MenuItemDTO> menuItems;
 
     public EventDetailsDTO() {
     }
 
-    public EventDetailsDTO(int id, LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<Integer> seatingIds, Integer layoutId, Integer menuId) {
+    public EventDetailsDTO(int id, LocalDate startDate, LocalDate endDate, Integer seatingDuration, String name, String description, Double price, List<SeatingDTO> seatings, MenuDTO menu) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -50,9 +46,8 @@ public class EventDetailsDTO {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.seatingIds = seatingIds;
-        this.layoutId = layoutId;
-        this.menuId = menuId;
+        this.seatings = seatings;
+        this.menu = menu;
     }
 
     public int getId() {
@@ -111,27 +106,19 @@ public class EventDetailsDTO {
         this.price = price;
     }
 
-    public List<Integer> getSeatingIds() {
-        return seatingIds;
+    public List<SeatingDTO> getSeatings() {
+        return seatings;
     }
 
-    public void setSeatingIds(List<Integer> seatingIds) {
-        this.seatingIds = seatingIds;
+    public void setSeatings(List<SeatingDTO> seatings) {
+        this.seatings = seatings;
     }
 
-    public Integer getLayoutId() {
-        return layoutId;
+    public MenuDTO getMenu() {
+        return menu;
     }
 
-    public void setLayoutId(Integer layoutId) {
-        this.layoutId = layoutId;
-    }
-
-    public Integer getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Integer menuId) {
-        this.menuId = menuId;
+    public void setMenu(MenuDTO menu) {
+        this.menu = menu;
     }
 }
