@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Detail</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.js}"></script>
+</head>
+<body class="bg-secondary">
+<div class="container">
+    <header th:insert="~{nav::navbar}"></header>
+
+    <h1 class="text-white">Menu Details</h1>
+    <hr>
+
+    <dl class="row" th:object="${menu}">
+        <dt class="text-white col-sm-2 ">Name:</dt>
+        <dd class="col-sm-10">
+            <span th:text="*{name}" class="text-white"></span>
+        </dd>
+        <dt class="text-white col-sm-2">Description:</dt>
+        <dd class="col-sm-10">
+            <span th:text="*{description}" class="text-white"></span>
+        </dd>
+        <dt class="text-white col-sm-2" >Date Created:</dt>
+        <dd class="col-sm-10" >
+            <span th:text="*{#dates.format(dateCreated, 'yyyy-MM-dd hh:mm a')}" class="text-white"></span>
+        </dd>
+    </dl>
+
+    <div th:if="${menuItems != null and !menuItems.isEmpty()}">
+        <table class="table table-dark" th:unless="menu == null">
+            <thead>
+            <tr>
+                <th class="text-info">Name</th>
+                <th class="text-info">Description</th>
+                <th class="text-info">Manage</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="menuItem : ${menuItems}">
+                <td th:text="${menuItem.name}"></td>
+                <td th:text="${menuItem.description}"></td>
+                <td>
+                    <a th:href="@{/menuItem/edit/{id}(id=${menuItem.id})}" class="btn btn-warning">Edit</a> |
+                    <a th:href="@{/menuItem/delete/{id}(id=${menuItem.id})}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a th:href="@{/menuItem/create/{id}(id=${menu.id})}" class="btn btn-dark">Create Menu Item</a>
+
+    <div th:if="${menuItems == null or menuItems.isEmpty()}">
+        <span class="text-warning">No menu items for this menu yet!</span>
+    </div>
+
+    <div>
+        <a th:href="@{/menu}">Go Back</a>
+    </div>
+</div>
+</body>
+</html>
