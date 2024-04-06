@@ -11,7 +11,8 @@
     <header th:insert="~{nav :: navbar}"></header>
     <h2 class="text-center font-weight-bold text-white">Event List</h2>
     <a th:href="@{/event/create}" class="btn btn-primary">Create An Event</a>
-    <table class="table table-dark mt-3" th:unless="${events == null}">
+    <h3 class="text-center text-warning" th:unless="${events != null && events.size() > 0}">No events to display</h3>
+    <table class="table table-dark mt-3" th:unless="${events == null || events.size() == 0}">
         <thead>
         <tr>
             <th class="text-info">Name</th>

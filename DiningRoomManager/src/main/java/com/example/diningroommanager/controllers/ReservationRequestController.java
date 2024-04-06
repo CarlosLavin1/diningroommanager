@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,7 +27,7 @@ public class ReservationRequestController {
     }
 
     @GetMapping(value = "/res/create/{id}")
-    public String create(Model model, @PathVariable int id) {
+    public String create(@PathVariable int id, Model model) {
         var seating = seatingRepository.findById(id);
         if(seating.isPresent())
             model.addAttribute("seating", seating.get());
@@ -35,7 +36,7 @@ public class ReservationRequestController {
     }
 
     @PostMapping("/res/create/{id}")
-    public String createReservationRequest(@Valid ReservationRequest reservationrequest, Model model, BindingResult br, @PathVariable int id) {
+    public String createReservationRequest(@PathVariable int id, @Valid @ModelAttribute(value = "reservationrequest") ReservationRequest reservationrequest, BindingResult br, Model model) {
         if (!br.hasErrors()) {
             var seating =  seatingRepository.findById(id);
             if(seating.isPresent())
@@ -49,6 +50,7 @@ public class ReservationRequestController {
             var seating = seatingRepository.findById(id);
             if(seating.isPresent())
                 model.addAttribute("seating", seating.get());
+            //model.addAttribute("reservationrequest", reservationRequest);
             return "res/create";
         }
     }
