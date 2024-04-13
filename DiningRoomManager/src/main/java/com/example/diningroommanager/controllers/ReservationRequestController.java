@@ -1,10 +1,10 @@
 package com.example.diningroommanager.controllers;
 
-import com.example.diningroommanager.entities.Layout;
 import com.example.diningroommanager.entities.ReservationRequest;
 import com.example.diningroommanager.entities.Seating;
 import com.example.diningroommanager.repositories.*;
 
+import com.example.diningroommanager.services.EmailService;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -24,14 +24,17 @@ public class ReservationRequestController {
     private TableRepository tableRepository;
     private EventRepository eventRepository;
     private final LayoutRepository layoutRepository;
+    private final EmailService emailService;
 
-    public ReservationRequestController(ReservationRequestRepository reservationRequestRepository, SeatingRepository seatingRepository, StatusRepository statusRepository, TableRepository tableRepository, EventRepository eventRepository, LayoutRepository layoutRepository) {
+
+    public ReservationRequestController(ReservationRequestRepository reservationRequestRepository, SeatingRepository seatingRepository, StatusRepository statusRepository, TableRepository tableRepository, EventRepository eventRepository, LayoutRepository layoutRepository, EmailService emailService) {
         this.reservationRequestRepository = reservationRequestRepository;
         this.seatingRepository = seatingRepository;
         this.statusRepository = statusRepository;
         this.tableRepository = tableRepository;
         this.eventRepository = eventRepository;
         this.layoutRepository = layoutRepository;
+        this.emailService = emailService;
     }
 
     @GetMapping(value = "/res/create/{id}")
@@ -81,6 +84,8 @@ public class ReservationRequestController {
                     return "res/create";
                 }
 
+                // Send an email after the reservation is saved
+                emailService.sendSimpleEmail("New Reservation", "A new reservation has been created.", "from@nbcc.com", "to@test.com");
 
                 reservationrequest.setSeating(seating.get());
             }
