@@ -1,7 +1,7 @@
 package com.example.diningroommanager.controllers;
 
 import com.example.diningroommanager.dtos.EventDetailsDTO;
-import com.example.diningroommanager.entities.Event;
+import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.EventRepository;
 import com.example.diningroommanager.repositories.LayoutRepository;
 import com.example.diningroommanager.repositories.MenuRepository;
@@ -9,6 +9,7 @@ import com.example.diningroommanager.repositories.SeatingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,12 +23,20 @@ public class EventControllerAPI {
     private final SeatingRepository seatingRepo;
     private final LayoutRepository layoutRepo;
     private final MenuRepository menuRepo;
+    private final LoginToken loginToken;
 
-    public EventControllerAPI(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo) {
+
+    public EventControllerAPI(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo, LoginToken loginToken) {
         this.eventRepo = eventRepo;
         this.seatingRepo = seatingRepo;
         this.layoutRepo = layoutRepo;
         this.menuRepo = menuRepo;
+        this.loginToken = loginToken;
+    }
+
+    @ModelAttribute("authenticated")
+    public boolean getAuthenticated(){
+        return loginToken.hasToken();
     }
 
     @GetMapping("/api/events")

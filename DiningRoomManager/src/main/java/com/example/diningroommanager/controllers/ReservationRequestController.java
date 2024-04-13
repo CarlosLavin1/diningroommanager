@@ -2,6 +2,7 @@ package com.example.diningroommanager.controllers;
 
 import com.example.diningroommanager.entities.ReservationRequest;
 import com.example.diningroommanager.entities.Seating;
+import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.ReservationRequestRepository;
 import com.example.diningroommanager.repositories.SeatingRepository;
 import com.example.diningroommanager.repositories.StatusRepository;
@@ -19,11 +20,19 @@ public class ReservationRequestController {
     private ReservationRequestRepository reservationRequestRepository;
     private SeatingRepository seatingRepository;
     private StatusRepository statusRepository;
+    private final LoginToken loginToken;
 
-    public ReservationRequestController(ReservationRequestRepository reservationRequestRepository, SeatingRepository seatingRepository, StatusRepository statusRepository) {
+
+    public ReservationRequestController(ReservationRequestRepository reservationRequestRepository, SeatingRepository seatingRepository, StatusRepository statusRepository, LoginToken loginToken) {
         this.reservationRequestRepository = reservationRequestRepository;
         this.seatingRepository = seatingRepository;
         this.statusRepository = statusRepository;
+        this.loginToken = loginToken;
+    }
+
+    @ModelAttribute("authenticated")
+    public boolean getAuthenticated(){
+        return loginToken.hasToken();
     }
 
     @GetMapping(value = "/res/create/{id}")
