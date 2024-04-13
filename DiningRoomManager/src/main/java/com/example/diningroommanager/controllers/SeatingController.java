@@ -1,7 +1,7 @@
 package com.example.diningroommanager.controllers;
 
-import com.example.diningroommanager.entities.Event;
 import com.example.diningroommanager.entities.Seating;
+import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.EventRepository;
 import com.example.diningroommanager.repositories.SeatingRepository;
 import jakarta.validation.Valid;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -16,10 +17,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class SeatingController {
     private final EventRepository eventRepo;
     private final SeatingRepository seatingRepo;
+    private final LoginToken loginToken;
 
-    public SeatingController(EventRepository eventRepo, SeatingRepository seatingRepo) {
+
+    public SeatingController(EventRepository eventRepo, SeatingRepository seatingRepo, LoginToken loginToken) {
         this.eventRepo = eventRepo;
         this.seatingRepo = seatingRepo;
+        this.loginToken = loginToken;
+    }
+
+    @ModelAttribute("authenticated")
+    public boolean getAuthenticated(){
+        return loginToken.hasToken();
     }
 
     @GetMapping(value = "/seatings")

@@ -1,6 +1,7 @@
 package com.example.diningroommanager.controllers;
 
 import com.example.diningroommanager.entities.Layout;
+import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.LayoutRepository;
 import com.example.diningroommanager.repositories.TableRepository;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -15,11 +17,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LayoutController {
     private final LayoutRepository layoutRepository;
     private final TableRepository tableRepository;
+    private final LoginToken loginToken;
 
 
-    public LayoutController(LayoutRepository layoutRepository, TableRepository tableRepository) {
+    public LayoutController(LayoutRepository layoutRepository, TableRepository tableRepository, LoginToken loginToken) {
         this.layoutRepository = layoutRepository;
         this.tableRepository = tableRepository;
+        this.loginToken = loginToken;
+    }
+
+    @ModelAttribute("authenticated")
+    public boolean getAuthenticated(){
+        return loginToken.hasToken();
     }
 
 

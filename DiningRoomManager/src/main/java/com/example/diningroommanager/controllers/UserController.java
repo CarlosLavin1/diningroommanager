@@ -1,6 +1,7 @@
 package com.example.diningroommanager.controllers;
 
 import com.example.diningroommanager.authDTO.dtos.RegistrationRequestDTO;
+import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.UserRepository;
 import com.example.diningroommanager.services.UserService;
 import jakarta.validation.Valid;
@@ -17,13 +18,19 @@ import static com.example.diningroommanager.constants.AttributeConstants.MESSAGE
 public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
+    private final LoginToken loginToken;
 
-    public UserController(UserRepository userRepository, UserService userService) {
+
+    public UserController(UserRepository userRepository, UserService userService, LoginToken loginToken) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.loginToken = loginToken;
     }
 
-
+    @ModelAttribute("authenticated")
+    public boolean getAuthenticated(){
+        return loginToken.hasToken();
+    }
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("user", new RegistrationRequestDTO());

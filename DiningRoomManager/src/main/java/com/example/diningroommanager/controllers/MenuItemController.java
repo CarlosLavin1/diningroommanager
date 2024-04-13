@@ -1,6 +1,7 @@
 package com.example.diningroommanager.controllers;
 
 import com.example.diningroommanager.entities.MenuItem;
+import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.MenuItemRepository;
 import com.example.diningroommanager.repositories.MenuRepository;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -15,10 +17,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MenuItemController {
     private final MenuRepository menuRepository;
     private final MenuItemRepository menuItemRepository;
+    private final LoginToken loginToken;
 
-    public MenuItemController(MenuRepository menuRepository, MenuItemRepository menuItemRepository) {
+
+    public MenuItemController(MenuRepository menuRepository, MenuItemRepository menuItemRepository, LoginToken loginToken) {
         this.menuRepository = menuRepository;
         this.menuItemRepository = menuItemRepository;
+        this.loginToken = loginToken;
+    }
+
+    @ModelAttribute("authenticated")
+    public boolean getAuthenticated(){
+        return loginToken.hasToken();
     }
 
 
