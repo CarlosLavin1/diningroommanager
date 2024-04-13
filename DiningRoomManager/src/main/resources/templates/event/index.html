@@ -9,6 +9,7 @@
 <body class="bg-secondary">
 <div class="container">
     <header th:insert="~{nav :: navbar}"></header>
+    <p th:if="${authenticated}">test</p>
     <h2 class="text-center font-weight-bold text-white">Event List</h2>
     <a th:href="@{/event/create}" class="btn btn-primary">Create An Event</a>
     <h3 class="text-center text-warning" th:unless="${events != null && events.size() > 0}">No events to display</h3>

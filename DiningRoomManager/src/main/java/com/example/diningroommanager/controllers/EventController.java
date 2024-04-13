@@ -3,6 +3,7 @@ package com.example.diningroommanager.controllers;
 import com.example.diningroommanager.entities.Event;
 import com.example.diningroommanager.entities.Layout;
 import com.example.diningroommanager.entities.Menu;
+import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.EventRepository;
 import com.example.diningroommanager.repositories.LayoutRepository;
 import com.example.diningroommanager.repositories.MenuRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,12 +23,18 @@ public class EventController {
     private final SeatingRepository seatingRepo;
     private final LayoutRepository layoutRepo;
     private final MenuRepository menuRepo;
+    private final LoginToken loginToken;
 
-    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo) {
+    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo, LoginToken loginToken) {
         this.eventRepo = eventRepo;
         this.seatingRepo = seatingRepo;
         this.layoutRepo = layoutRepo;
         this.menuRepo = menuRepo;
+        this.loginToken = loginToken;
+    }
+    @ModelAttribute("authenticated")
+    public boolean getAuthenticated(){
+        return loginToken.hasToken();
     }
 
     @GetMapping(value = {"/events", "/"})
