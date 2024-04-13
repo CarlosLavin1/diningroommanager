@@ -3,10 +3,7 @@ package com.example.diningroommanager.controllers;
 import com.example.diningroommanager.entities.Event;
 import com.example.diningroommanager.entities.Layout;
 import com.example.diningroommanager.entities.Menu;
-import com.example.diningroommanager.repositories.EventRepository;
-import com.example.diningroommanager.repositories.LayoutRepository;
-import com.example.diningroommanager.repositories.MenuRepository;
-import com.example.diningroommanager.repositories.SeatingRepository;
+import com.example.diningroommanager.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +18,14 @@ public class EventController {
     private final SeatingRepository seatingRepo;
     private final LayoutRepository layoutRepo;
     private final MenuRepository menuRepo;
+    private ReservationRequestRepository reservationRequestRepo;
 
-    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo) {
+    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo, ReservationRequestRepository reservationRequestRepo) {
         this.eventRepo = eventRepo;
         this.seatingRepo = seatingRepo;
         this.layoutRepo = layoutRepo;
         this.menuRepo = menuRepo;
+        this.reservationRequestRepo = reservationRequestRepo;
     }
 
     @GetMapping(value = {"/events", "/"})
@@ -45,6 +44,7 @@ public class EventController {
             model.addAttribute("event", item.get());
             model.addAttribute("layout", item.get().getLayout());
             model.addAttribute("menu", item.get().getMenu());
+
         }
 
         return "event/detail";

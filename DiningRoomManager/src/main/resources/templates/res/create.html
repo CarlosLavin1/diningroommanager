@@ -35,7 +35,27 @@
                     <input class="form-control" th:field="*{groupSize}" type="number"/>
                     <div class="alert alert-warning" th:errors="*{groupSize}"></div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="Create"/>
+                <div class="form-group">
+                    <label class="form-label">Available Table Layout:</label>
+                    <div th:if="${seating.event.layout.tables.isEmpty()}">
+                        <p class="text-warning">No tables available for this layout.</p>
+                    </div>
+                    <div th:if="!${seating.event.layout.tables.isEmpty()}">
+                        <select class="form-control" th:field="*{diningTable.id}">
+                            <option th:each="table : ${seating.event.layout.tables}"
+                                    th:value="${table.id}" th:text="${table.layout.name + ' - Table with ' + table.numberOfSeats + ((table.numberOfSeats > 1 ) ? ' seats' : ' seat')}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="alert alert-warning" th:errors="*{diningTable.id}"></div>
+                </div>
+
+                <div th:if="${seating.event.layout.tables.isEmpty()}">
+                    <a th:href="@{/table/create/{id}(id=${seating.event.layout.id})}" class="btn btn-primary">Assign Table</a>
+                </div>
+                <div th:if="${!seating.event.layout.tables.isEmpty()}">
+                    <input class="btn btn-primary" type="submit" value="Create"/>
+                </div>
             </form>
             <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-success mt-3">Go Back</a>
         </main>

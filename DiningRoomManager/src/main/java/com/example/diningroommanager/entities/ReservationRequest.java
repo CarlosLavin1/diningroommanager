@@ -1,8 +1,7 @@
 package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class ReservationRequest {
@@ -20,12 +19,41 @@ public class ReservationRequest {
     @NotBlank(message = "Last name is required")
     private String lastName;
     @NotBlank(message = "Email is required")
+    @Email
     private String email;
     @NotNull(message = "Group size is required")
+    @Min(value = 2, message = "Minimum group size is 2 people")
+    @Max(value = 200, message = "The maximum group size is 200 members")
     private Integer groupSize;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", foreignKey = @ForeignKey(name = "FK_RESERVATIONREQUEST_STATUS"))
     private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tableId", foreignKey = @ForeignKey(name = "FK_ReservationRequest_Table"))
+    private DiningTable diningTable;
+
+
+    public ReservationRequest(int id, Seating seating, String firstName, String lastName, String email, Integer groupSize, Status status, DiningTable diningTable) {
+        this.id = id;
+        this.seating = seating;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.groupSize = groupSize;
+        this.status = status;
+        this.diningTable = diningTable;
+    }
+
+    public ReservationRequest(Seating seating, String firstName, String lastName, String email, Integer groupSize, Status status, DiningTable diningTable) {
+        this.seating = seating;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.groupSize = groupSize;
+        this.status = status;
+        this.diningTable = diningTable;
+    }
 
     public ReservationRequest(int id, Seating seating, String firstName, String lastName, String email, Integer groupSize, Status status) {
         this.id = id;
@@ -70,6 +98,14 @@ public class ReservationRequest {
     }
 
     public ReservationRequest() {
+    }
+
+    public DiningTable getDiningTable() {
+        return diningTable;
+    }
+
+    public void setDiningTable(DiningTable diningTable) {
+        this.diningTable = diningTable;
     }
 
     public Status getStatus() {

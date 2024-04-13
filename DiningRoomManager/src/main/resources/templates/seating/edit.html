@@ -11,10 +11,11 @@
     <header th:insert="~{nav :: navbar}"></header>
     <h2 class="text-center">Edit A Seating</h2>
     <hr>
-    <form method="POST" th:object="${seating}" th:action="@{/seating/create/{id}(id=${seating.event.id})}">
+    <form method="POST" th:object="${seating}" th:action="@{/seating/edit/{id}(id=${seating.id})}">
+        <input type="hidden" th:field="*{id}">
         <h3 class="text-center">Event: <span th:text="${seating.event.name}"></span></h3>
-        <h4 class="text-center">Event Start Date: <input class="rounded" th:value="${seating.event.startDate}" readonly></input></h4>
-        <h4 class="text-center">Event End Date: <input class="rounded" th:value="${seating.event.endDate}" readonly></input></h4>
+        <h4 class="text-center">Event Start Date: <input class="rounded" th:value="${seating.event.startDate}" readonly /></h4>
+        <h4 class="text-center">Event End Date: <input class="rounded" th:value="${seating.event.endDate}" readonly /></h4>
         <div class="form-group">
             <label class="form-label">Start Date And Time:</label>
             <input class="form-control" th:field="*{startDateAndTime}" type="datetime-local"/>

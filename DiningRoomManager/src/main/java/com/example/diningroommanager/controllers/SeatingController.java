@@ -1,9 +1,8 @@
 package com.example.diningroommanager.controllers;
 
-import com.example.diningroommanager.entities.Event;
+import com.example.diningroommanager.entities.ReservationRequest;
 import com.example.diningroommanager.entities.Seating;
-import com.example.diningroommanager.repositories.EventRepository;
-import com.example.diningroommanager.repositories.SeatingRepository;
+import com.example.diningroommanager.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class SeatingController {
     private final EventRepository eventRepo;
     private final SeatingRepository seatingRepo;
+    private final ReservationRequestRepository reservationReqRepo;
+    private final TableRepository tableRepository;
+    private final StatusRepository statusRepository;
 
-    public SeatingController(EventRepository eventRepo, SeatingRepository seatingRepo) {
+
+    public SeatingController(EventRepository eventRepo, SeatingRepository seatingRepo, ReservationRequestRepository reservationReqRepo, TableRepository tableRepository, StatusRepository statusRepository) {
         this.eventRepo = eventRepo;
         this.seatingRepo = seatingRepo;
+        this.reservationReqRepo = reservationReqRepo;
+        this.tableRepository = tableRepository;
+        this.statusRepository = statusRepository;
     }
 
     @GetMapping(value = "/seatings")
@@ -48,7 +54,9 @@ public class SeatingController {
                 seating.setEvent(event.get());
             }
 
-            seatingRepo.save(seating);
+            var newSeating = new Seating(seating.getEvent(), seating.getStartDateAndTime());
+
+            seatingRepo.save(newSeating);
             return "redirect:/event/details/{id}";
         } else {
             var event = eventRepo.findById(id);
@@ -57,12 +65,41 @@ public class SeatingController {
             return "seating/create";
         }
     }
-
     @GetMapping(value = "/seating/details/{id}")
     public String details(Model model, @PathVariable int id) {
         var item = seatingRepo.findById(id);
-        if(item.isPresent())
-            model.addAttribute("seating", item.get());
+
+        if(item.isPresent()) {
+            var seating = item.get();
+
+            var validReservations = reservationReqRepo.getReservationRequestsBySeating_Id(id);
+
+
+            model.addAttribute("seating", seating);
+            model.addAttribute("validRes", validReservations);
+        }
+
+        return "seating/detail";
+    }
+
+    @PostMapping(value = "/seating/{seatingId}/details/{requestId}")
+    public String approveReservation(@PathVariable int seatingId, @PathVariable int requestId, Model model) {
+        var reservationRequest = reservationReqRepo.findById(requestId);
+
+        if (reservationRequest.isPresent()) {
+            ReservationRequest request = reservationRequest.get();
+            request.setStatus(statusRepository.getStatusByValue("approved"));
+            reservationReqRepo.save(request);
+        }
+
+        // Add the necessary model attributes here
+        var item = seatingRepo.findById(seatingId);
+        if(item.isPresent()) {
+            var seating = item.get();
+            var validReservations = reservationReqRepo.getReservationRequestsBySeating_Id(seatingId);
+            model.addAttribute("seating", seating);
+            model.addAttribute("validRes", validReservations);
+        }
 
         return "seating/detail";
     }
@@ -79,13 +116,23 @@ public class SeatingController {
     }
 
     @PostMapping(value = "/seating/edit/{id}")
-    public String edit(BindingResult br, Seating seating, Model model) {
+    public String edit(@PathVariable int id, Seating seatingToUpdate, BindingResult br, Model model) {
         if(!br.hasErrors()){
-            seatingRepo.save(seating);
-            return "redirect:/seatings";
-        } else {
-            return "seating/edit";
+            // get existing Seating object from the database
+            var seatings = seatingRepo.findById(id);
+
+            if (seatings.isPresent()){
+
+                var seating = seatings.get();
+
+                // Update the existing Seating object with the new data
+                seating.setStartDateAndTime(seatingToUpdate.getStartDateAndTime());
+
+                seatingRepo.save(seating);
+                return "redirect:/seatings";
+            }
         }
+        return "seating/edit";
     }
 
     @GetMapping(value = "/seating/delete/{id}")
