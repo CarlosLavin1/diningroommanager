@@ -86,14 +86,21 @@
             <thead>
             <tr>
                 <th>Start Time And Date</th>
+                <th>Reservations</th>
                 <th>Manage</th>
             </tr>
             </thead>
             <tbody>
                 <tr th:each="seating: ${event.seatings}">
                     <td><span th:text="${seating.startDateAndTime.toString()}"></span></td>
+                    <td th:if="${!seating.reservationRequests.isEmpty()}">
+                        <span th:text="'Seating with ' + ${seating.reservationRequests.size()} + ' Reservations'"></span>
+                    </td>
+                    <td th:if="${seating.reservationRequests.isEmpty()}">
+                        <span class="text-danger">No Reservation for this seating yet</span>
+                    </td>
                     <td>
-                        <a th:if="${authenticated}" th:href="@{/seating/edit/{id}(id=${seating.id})}" class="btn btn-warning">Edit</a>
+                        <a th:if="${authenticated}" th:href="@{/seating/edit/{id}(id=${seating.id})}" class="btn btn-warning">Edit Seating</a>
                         <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-info">Details</a>
                         <a th:if="${authenticated}" th:href="@{/seating/delete/{id}(id=${seating.id})}" class="btn btn-danger">Delete</a>
                         <a th:href="@{/res/create/{id}(id=${seating.id})}" class="btn btn-primary">Request Reservation</a>
