@@ -20,11 +20,12 @@
                 <th class="text-info">Name</th>
                 <th class="text-info">Description</th>
                 <th class="text-info">Tables</th>
+                <th class="text-info">Total Seats</th>
                 <th class="text-info">Manage</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="layout: ${layouts}">
+            <tr th:each="layout, iterStat: ${layouts}">
                 <td>
                     <span th:text="${layout.name}"></span>
                 </td>
@@ -33,6 +34,9 @@
                 </td>
                 <td>
                     <span th:text="${layout.tables.size()}"></span>
+                </td>
+                <td>
+                    <span th:text="${seats[iterStat.count - 1]}"></span><span> seats</span>
                 </td>
                 <td>
                     <a th:if="${authenticated}" th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-warning">Create table</a>
