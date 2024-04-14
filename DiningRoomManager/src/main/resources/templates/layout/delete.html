@@ -11,11 +11,11 @@
     <div class="container">
         <header th:insert="~{nav::navbar}"></header>
 
-        <h1>Delete Layout</h1>
-        <h3>Are you sure want to delete this?</h3>
+        <h1 th:if="${authenticated}">Delete Layout</h1>
+        <h3 th:if="${authenticated}">Are you sure want to delete this?</h3>
 
-        <hr>
-        <div>
+        <hr th:if="${authenticated}">
+        <div th:if="${authenticated}">
             <dl class="row" th:object="${layout}">
                 <dt class="col-sm-2">
                     Name:
@@ -44,7 +44,7 @@
                 </div>
             </form>
         </div>
-    <div>
+    <div th:if="${authenticated}">
         <a th:href="@{/layout}">Go Back</a>
     </div>
     </div>
