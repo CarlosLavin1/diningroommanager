@@ -7,7 +7,7 @@
     <script th:src="@{/js/bootstrap.js}"></script>
 </head>
 <body class="bg-secondary">
-<div class="container" th:object="${seating}">
+<div class="container" th:object="${seating}" th:if="${authenticated}">
     <header th:insert="~{nav :: navbar}"></header>
     <h2 class="text-center">Edit A Seating</h2>
     <hr>

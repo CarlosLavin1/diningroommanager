@@ -24,7 +24,18 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/seating/create**")
                 .addPathPatterns("/seating/edit/{id}**")
-                .addPathPatterns("/seating/details/{id}**")
                 .addPathPatterns("/seating/delete/{id}**");
+        registry.addInterceptor(jwtInterceptor)
+                .addPathPatterns("/layout/create**")
+                .addPathPatterns("/layout/edit/{id}**")
+                .addPathPatterns("/layout/delete/{id}**");
+        registry.addInterceptor(jwtInterceptor)
+                .addPathPatterns("/menu/create**")
+                .addPathPatterns("/menu/edit/{id}**")
+                .addPathPatterns("/menu/delete/{id}**");
+        registry.addInterceptor(jwtInterceptor)
+                .addPathPatterns("/table/create**")
+                .addPathPatterns("/table/edit/{id}**")
+                .addPathPatterns("/table/delete/{id}**");
     }
 }

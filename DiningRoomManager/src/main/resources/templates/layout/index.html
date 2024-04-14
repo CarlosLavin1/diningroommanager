@@ -35,17 +35,17 @@
                     <span th:text="${layout.tables.size()}"></span>
                 </td>
                 <td>
-                    <a th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-warning">Create table</a> |
-                    <a th:href="@{/layout/detail/{id}(id=${layout.id})}" class="btn btn-info">Details</a> |
-                    <a th:href="@{/layout/edit/{id}(id=${layout.id})}" class="btn btn-success">Edit</a> |
-                    <a th:href="@{/layout/delete/{id}(id=${layout.id})}" class="btn btn-danger">Delete</a>
+                    <a th:if="${authenticated}" th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-warning">Create table</a>
+                    <a th:href="@{/layout/detail/{id}(id=${layout.id})}" class="btn btn-info">Details</a>
+                    <a th:if="${authenticated}" th:href="@{/layout/edit/{id}(id=${layout.id})}" class="btn btn-success">Edit</a>
+                    <a th:if="${authenticated}" th:href="@{/layout/delete/{id}(id=${layout.id})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <a th:href="@{/layout/create}" class="btn btn-primary">Create Layout</a>
+    <a th:if="${authenticated}" th:href="@{/layout/create}" class="btn btn-primary">Create Layout</a>
 
     <p class="text-center" th:if="${layouts == null || layouts.isEmpty()}">
         No Layout Found.

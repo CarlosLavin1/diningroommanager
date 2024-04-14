@@ -11,9 +11,9 @@
     <div class="container">
         <header th:insert="~{nav::navbar}"></header>
 
-        <h1 class="text-center mt-5">Edit Layout</h1>
+        <h1 class="text-center mt-5"  th:if="${authenticated}">Edit Layout</h1>
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center" th:if="${authenticated}">
             <form th:action="@{/layout/edit/{id}(id=${layout.id})}" th:object="${layout}" method="post">
                 <input type="hidden" th:value="*{id}">
 

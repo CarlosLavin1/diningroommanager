@@ -27,8 +27,8 @@
                 <input disabled th:value="${s.startDateAndTime}" class="form-control" type="datetime-local"></input>
             </td>
             <td>
-                <a th:href="@{/seating/details/{id}(id=${s.id})}" class="btn btn-info">Details</a> |
-                <a th:href="@{/seating/edit/{id}(id=${s.id})}" class="btn btn-warning">Edit</a> |
+                <a th:href="@{/seating/details/{id}(id=${s.id})}" class="btn btn-info">Details</a>
+                <a th:href="@{/seating/edit/{id}(id=${s.id})}" class="btn btn-warning">Edit</a>
                 <a th:href="@{/seating/delete/{id}(id=${s.id})}" class="btn btn-danger">Delete</a>
             </td>
         </tr>

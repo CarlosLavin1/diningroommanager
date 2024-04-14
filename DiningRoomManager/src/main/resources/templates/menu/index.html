@@ -35,17 +35,17 @@
                     <span th:text="${menu.menuItems.size()}"></span>
                 </td>
                 <td>
-                    <a th:href="@{/menu/edit/{id}(id=${menu.id})}" class="btn btn-warning">Edit</a> |
-                    <a th:href="@{/menu/detail/{id}(id=${menu.id})}"  class="btn btn-info">Details</a> |
-                    <a th:href="@{/menu/delete/{id}(id=${menu.id})}" class="btn btn-danger">Delete</a> |
-                    <a th:href="@{/menuItem/create/{id}(id=${menu.id})}" class="btn btn-success">Add Item</a>
+                    <a th:if="${authenticated}" th:href="@{/menu/edit/{id}(id=${menu.id})}" class="btn btn-warning">Edit</a>
+                    <a th:href="@{/menu/detail/{id}(id=${menu.id})}"  class="btn btn-info">Details</a>
+                    <a th:if="${authenticated}" th:href="@{/menu/delete/{id}(id=${menu.id})}" class="btn btn-danger">Delete</a>
+                    <a th:if="${authenticated}" th:href="@{/menuItem/create/{id}(id=${menu.id})}" class="btn btn-success">Add Item</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <a th:href="@{/menu/create}" class="btn btn-primary">Create Menu</a>
+    <a th:if="${authenticated}" th:href="@{/menu/create}" class="btn btn-primary">Create Menu</a>
 
     <p class="text-center text-warning text-bolder" th:if="${menus == null || menus.isEmpty()}">
         No Menu Found.
