@@ -11,19 +11,72 @@
     <header th:insert="~{nav :: navbar}"></header>
     <h2 class="text-center">Seating Details</h2>
     <dl class="row" th:object="${seating}">
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Event:
         </dt>
         <dd class="col-sm-10">
             <span th:text="*{event.name}"></span>
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Seating Date and Time:
         </dt>
         <dd class="col-sm-10">
             <span th:text="*{startDateAndTime.toString()}"> </span>
         </dd>
     </dl>
+
+    <table class="table table-dark mt-3" th:unless="${validRes == null || validRes.size() == 0}">
+        <thead>
+        <tr>
+            <th class="text-info">Full Name</th>
+            <th class="text-info">Group Size</th>
+            <th class="text-info">Status</th>
+            <th class="text-info">Layout</th>
+            <th class="text-info">Number of seat for table</th>
+            <th class="text-info">Manage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="res: ${validRes}">
+            <td>
+                <span th:text="*{res.firstName}"></span> <span th:text="*{res.lastName}"></span>
+            </td>
+            <td>
+                <span th:text="*{res.groupSize}"></span>
+            </td>
+            <td>
+                <span th:text="*{res.status.display}"></span>
+            </td>
+            <td>
+                <span th:text="${res.seating.event.layout.name}"></span>
+            </td>
+            <td th:if="${res.diningTable != null}">
+                <span th:text="${res.diningTable.numberOfSeats}"></span>
+            </td>
+            <td th:if="${res.diningTable == null}">
+                No table associated with this reservation.
+            </td>
+            <td>
+                <form class="d-inline-block" th:if="${res.diningTable != null && res.diningTable.id != null && res.status.value != 'approved' && authenticated}"
+                      th:action="@{/seating/{seatingId}/details/{requestId}(seatingId=${res.seating.id}, requestId=${res.id})}"
+                      method="post">
+                    <input type="submit" value="Approve" class="btn btn-success"/>
+                </form>
+                <a th:if="${res.diningTable == null || res.diningTable.id == null}"
+                   th:href="@{/table/create/{id}(id=${seating.event.layout.id})}" class="btn btn-primary">Assign
+                    Table</a>
+                <a th:href="@{/res/detail/{id}(id=${res.id})}" class="btn btn-info">Details</a> |
+                <a th:if="${authenticated}" th:href="@{/res/edit/{id}(id=${res.id})}" class="btn btn-warning">Edit</a> |
+                <a th:if="${authenticated}" th:href="@{/res/delete/{id}(id=${res.id})}" class="btn btn-danger">Delete</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h4 th:unless="${validRes != null and !validRes.isEmpty()}" class="text-center text-warning">No Reservations for
+        this seating</h4>
+
+
     <a th:href="@{/res/create/{id}(id=${seating.id})}" class="btn btn-primary">Request a Reservation</a>
     <br>
     <a th:href="@{/event/details/{id}(id=${seating.event.id})}" class="btn btn-success">Go Back</a>

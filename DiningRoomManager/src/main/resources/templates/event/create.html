@@ -14,50 +14,50 @@
         <hr/>
         <form method="post" th:action="@{/event/create}" th:object="${event}">
             <div class="form-group">
-                <label class="form-label">Start Date:</label>
-                <input class="form-control" th:field="*{startDate}" type="date"/>
-                <div class="alert alert-warning" th:errors="*{startDate}"></div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">End Date:</label>
-                <input class="form-control" th:field="*{endDate}"  type="date"/>
-                <div class="alert alert-warning" th:errors="*{endDate}"></div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Name:</label>
-                <input class="form-control" th:field="*{name}"/>
+                <label for="name" class="form-label">Name:</label>
+                <input id="name" class="form-control" th:field="*{name}"/>
                 <div class="alert alert-warning" th:errors="*{name}"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Description:</label>
-                <input class="form-control" th:field="*{description}"/>
-                <div class="alert alert-warning" th:errors="*{description}"></div>
+                <label for="startDate" class="form-label">Start Date:</label>
+                <input id="startDate" class="form-control" th:field="*{startDate}" type="date"/>
+                <div class="alert alert-warning" th:errors="*{startDate}"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Price:</label>
-                <input class="form-control" th:field="*{price}"/>
+                <label for="endDate" class="form-label">End Date:</label>
+                <input id="endDate" class="form-control" th:field="*{endDate}"  type="date"/>
+                <div class="alert alert-warning" th:errors="*{endDate}"></div>
+            </div>
+            <div class="form-group">
+                <label for="price" class="form-label">Price:</label>
+                <input id="price" class="form-control" th:field="*{price}"/>
                 <div class="alert alert-warning" th:errors="*{price}"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Seating Duration:</label>
-                <input class="form-control" th:field="*{seatingDuration}" type="number"/>
+                <label for="startDur" class="form-label">Seating Duration (min):</label>
+                <input id="startDur" placeholder="60 minutes.." class="form-control" th:field="*{seatingDuration}" type="number"/>
                 <div class="alert alert-warning" th:errors="*{seatingDuration}"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Layout:</label>
-                <select class="form-control" th:field="*{layout.id}">
+                <label for="layout" class="form-label">Layout:</label>
+                <select id="layout" class="form-control" th:field="*{layout.id}">
                     <option value="">Select a layout</option>
-                    <option th:each="layout : ${layouts}" th:value="${layout.id}" th:text="${layout.name}"></option>
+                    <option th:each="layout : ${layouts}" th:value="${layout.id}" th:text="${layout.name + ' with ' + layout.diningTables.size() + (layout.diningTables.size() > 1 ? ' tables' : ' table')}"></option>
                 </select>
                 <div class="alert alert-warning" th:if="${layoutErr}" th:text="${layoutErr}"></div>
             </div>
             <div class="form-group">
-                <label class="form-label">Menu:</label>
-                <select class="form-control" th:field="*{menu.id}">
+                <label for="menu" class="form-label">Menu:</label>
+                <select id="menu" class="form-control" th:field="*{menu.id}">
                     <option value="">Select a Menu</option>
                     <option th:each="menu : ${menus}" th:value="${menu.id}" th:text="${menu.name}"></option>
                 </select>
                 <div class="alert alert-warning" th:if="${menuErr}" th:text="${menuErr}"></div>
+            </div>
+            <div class="form-group">
+                <label for="desc" class="form-label">Description:</label>
+                <textarea id="desc" class="form-control"  type="text" th:field="*{description}" cols="80" rows="5"></textarea>
+                <div class="alert alert-warning" th:errors="*{description}"></div>
             </div>
             <input class="btn btn-primary" type="submit" value="Create"/>
         </form>

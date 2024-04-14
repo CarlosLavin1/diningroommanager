@@ -70,6 +70,11 @@ public class Layout {
         this.createdDate = new Date();
     }
 
+    // Automatically update the date
+    @PreUpdate
+    public void preUpdate() {
+        this.createdDate = new Date();
+    }
 
     public Integer getId() {
         return id;

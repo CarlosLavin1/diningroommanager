@@ -29,6 +29,12 @@ public class Seating {
         this.startDateAndTime = startDateAndTime;
     }
 
+    public Seating(Event event, LocalDateTime startDateAndTime) {
+        this.event = event;
+        this.startDateAndTime = startDateAndTime;
+    }
+
+
     public Seating() {
     }
 
