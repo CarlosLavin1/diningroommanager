@@ -1,9 +1,7 @@
 package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -24,6 +22,8 @@ public class Event {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate endDate;
     @NotNull(message = "Seating duration is required")
+    @Min(value = 30, message = "Seating duration can't be shorter than 30 minutes")
+    @Max(value = 240, message = "Seating duration can't be longer than 4 hours")
     //@DateTimeFormat(pattern="HH:mm")
     private Integer seatingDuration;
     @NotBlank(message = "Name is required")

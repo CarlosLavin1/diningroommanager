@@ -1,6 +1,8 @@
 package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,10 +24,37 @@ public class ReservationRequest {
     @NotBlank(message = "Email is required")
     private String email;
     @NotNull(message = "Group size is required")
+    @Min(value = 2, message = "Minimum group size is 2 people")
+    @Max(value = 200, message = "The maximum group size is 200 members")
     private Integer groupSize;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", foreignKey = @ForeignKey(name = "FK_RESERVATIONREQUEST_STATUS"))
     private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tableId", foreignKey = @ForeignKey(name = "FK_ReservationRequest_Table"))
+    private DiningTable diningTable;
+
+    public ReservationRequest(int id, Seating seating, String firstName, String lastName, String email, Integer groupSize, Status status, DiningTable diningTable) {
+        this.id = id;
+        this.seating = seating;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.groupSize = groupSize;
+        this.status = status;
+        this.diningTable = diningTable;
+    }
+
+    public ReservationRequest(Seating seating, String firstName, String lastName, String email, Integer groupSize, Status status, DiningTable diningTable) {
+        this.seating = seating;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.groupSize = groupSize;
+        this.status = status;
+        this.diningTable = diningTable;
+    }
 
     public ReservationRequest(int id, Seating seating, String firstName, String lastName, String email, Integer groupSize, Status status) {
         this.id = id;
@@ -112,6 +141,12 @@ public class ReservationRequest {
         this.lastName = lastName;
     }
 
+
+    @Transient // not saved to the database
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -127,4 +162,13 @@ public class ReservationRequest {
     public void setGroupSize(Integer groupSize) {
         this.groupSize = groupSize;
     }
+
+    public DiningTable getDiningTable() {
+        return diningTable;
+    }
+
+    public void setDiningTable(DiningTable diningTable) {
+        this.diningTable = diningTable;
+    }
+
 }

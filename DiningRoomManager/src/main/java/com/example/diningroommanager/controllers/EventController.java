@@ -4,10 +4,7 @@ import com.example.diningroommanager.entities.Event;
 import com.example.diningroommanager.entities.Layout;
 import com.example.diningroommanager.entities.Menu;
 import com.example.diningroommanager.login.LoginToken;
-import com.example.diningroommanager.repositories.EventRepository;
-import com.example.diningroommanager.repositories.LayoutRepository;
-import com.example.diningroommanager.repositories.MenuRepository;
-import com.example.diningroommanager.repositories.SeatingRepository;
+import com.example.diningroommanager.repositories.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
+
 @Controller
 public class EventController {
     private final EventRepository eventRepo;
@@ -24,13 +23,15 @@ public class EventController {
     private final LayoutRepository layoutRepo;
     private final MenuRepository menuRepo;
     private final LoginToken loginToken;
+    private final ReservationRequestRepository reservationRequestRepo;
 
-    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo, LoginToken loginToken) {
+    public EventController(EventRepository eventRepo, SeatingRepository seatingRepo, LayoutRepository layoutRepo, MenuRepository menuRepo, LoginToken loginToken, ReservationRequestRepository reservationRequestRepo) {
         this.eventRepo = eventRepo;
         this.seatingRepo = seatingRepo;
         this.layoutRepo = layoutRepo;
         this.menuRepo = menuRepo;
         this.loginToken = loginToken;
+        this.reservationRequestRepo = reservationRequestRepo;
     }
     @ModelAttribute("authenticated")
     public boolean getAuthenticated(){
@@ -77,6 +78,15 @@ public class EventController {
 
     @PostMapping(value = "/event/create")
     public String create(@Valid Event event, BindingResult br, Model model) {
+        // Check if the start date or end date is in the past
+        var now = LocalDate.now();
+        if (event.getStartDate() != null && event.getStartDate().isBefore(now)) {
+            br.rejectValue("startDate", "error.event", "Start date cannot be in the past");
+        }
+        if (event.getEndDate() != null && event.getEndDate().isBefore(now)) {
+            br.rejectValue("endDate", "error.event", "End date cannot be in the past");
+        }
+
         // Check if a layout and a menu are selected
         if (event.getLayout() != null && event.getLayout().getId() != null &&
                 event.getMenu() != null && event.getMenu().getId() != null) {
@@ -126,7 +136,7 @@ public class EventController {
     }
 
     @PostMapping(value = "/event/edit/{id}")
-    public String edit(@PathVariable int id, BindingResult br, Event events, Model model) {
+    public String edit(@PathVariable int id, @Valid Event events, BindingResult br, Model model) {
         if (!br.hasErrors()) {
 
             // Check if a layout is selected
@@ -151,6 +161,11 @@ public class EventController {
                 model.addAttribute("menuErr", "Please select a menu");
             }
         }
+
+       // Repopulate the models
+        model.addAttribute("layouts", layoutRepo.findAll());
+        model.addAttribute("menus", menuRepo.findAll());
+
         return "event/edit";
     }
 
