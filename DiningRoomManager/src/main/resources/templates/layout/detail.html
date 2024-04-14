@@ -33,6 +33,12 @@
             <dd class="col-sm-10">
                 <span th:text="${#dates.format(layout.createdDate, 'yyyy-MM-dd hh:mm a')}"></span>
             </dd>
+            <dt class="col-sm-2">
+                Seats:
+            </dt>
+            <dd class="col-sm-10">
+                <span th:text="${seatCount}"></span><span> total seats</span>
+            </dd>
         </dl>
 
 

@@ -39,10 +39,22 @@ public class LayoutController {
 
         // Add to model
         model.addAttribute("layouts", values);
+        int[] seats = new int[values.size()];
+        int counter = 0;
+        for (var layout : values)
+            seats[counter++] = getTotalSeatsForTable(layout);
+        model.addAttribute("seats", seats);
 
         return "layout/index";
     }
 
+    private int getTotalSeatsForTable(Layout layout){
+        int seats = 0;
+        var tables = layout.getDiningTables();
+        for(var table : tables)
+            seats += table.getNumberOfSeats();
+        return seats;
+    }
 
     @GetMapping(value = "layout/create")
     public String create(Model model) {
@@ -90,6 +102,7 @@ public class LayoutController {
 
         if (layout.isPresent()) {
             model.addAttribute("layout", layout.get());
+            model.addAttribute("seatCount", getTotalSeatsForTable(layout.get()));
         }
 
         return "layout/detail";
