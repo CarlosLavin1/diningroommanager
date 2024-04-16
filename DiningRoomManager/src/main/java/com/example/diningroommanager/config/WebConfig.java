@@ -18,11 +18,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // set interceptors for all relevant entities
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/event/create**")
+                .addPathPatterns("/event/create/{id}**")
                 .addPathPatterns("/event/edit/{id}**")
                 .addPathPatterns("/event/delete/{id}**");
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/seating/create**")
+                .addPathPatterns("/seating/create/{id}**")
                 .addPathPatterns("/seating/edit/{id}**")
                 .addPathPatterns("/seating/delete/{id}**");
         registry.addInterceptor(jwtInterceptor)

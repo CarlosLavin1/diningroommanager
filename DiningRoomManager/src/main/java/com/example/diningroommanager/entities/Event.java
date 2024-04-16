@@ -32,7 +32,7 @@ public class Event {
 
     private String description;
     @NotNull(message = "Price is required")
-    @Positive(message = "Price can't be negative")
+    @Min(value = 0, message = "Price can't be negative")
     @Max(value = 10000, message = "Event price cannot exceed $10,000.00")
     private Double price;
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)//cascade makes all related seatings get deleted if event gets deleted
