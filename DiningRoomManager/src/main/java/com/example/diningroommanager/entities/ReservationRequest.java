@@ -1,10 +1,7 @@
 package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class ReservationRequest {
@@ -22,6 +19,7 @@ public class ReservationRequest {
     @NotBlank(message = "Last name is required")
     private String lastName;
     @NotBlank(message = "Email is required")
+    @Email
     private String email;
     @NotNull(message = "Group size is required")
     @Min(value = 2, message = "Minimum group size is 2 people")

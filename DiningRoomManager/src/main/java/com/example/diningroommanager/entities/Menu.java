@@ -2,6 +2,7 @@ package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Menu {
     private Integer id;
 
     @NotBlank(message = "Name is required")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters.")
     private String name;
     private String description;
 
