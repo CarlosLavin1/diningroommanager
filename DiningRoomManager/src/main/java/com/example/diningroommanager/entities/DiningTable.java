@@ -1,7 +1,10 @@
 package com.example.diningroommanager.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "dining_table")
@@ -17,6 +20,9 @@ public class DiningTable {
     private Layout layout;
 
     @NotNull
+    @Positive(message = "Number of seats must be a positive number")
+    @Min(value = 2, message = "Min number of seats per table is 2")
+    @Max(value = 2, message = "Max number of seats per table is 12")
     private int numberOfSeats;
 
     public DiningTable() {

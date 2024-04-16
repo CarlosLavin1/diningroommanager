@@ -50,7 +50,7 @@
                     <div class="alert alert-warning" th:errors="*{diningTable.id}"></div>
                 </div>
 
-                <div th:if="${seating.event.layout.tables.isEmpty()}">
+                <div th:if="${seating.event.layout.tables.isEmpty() and authenticated}">
                     <a th:href="@{/table/create/{id}(id=${seating.event.layout.id})}" class="btn btn-primary">Assign Table</a>
                 </div>
 
@@ -58,7 +58,7 @@
                     <input class="btn btn-primary" type="submit" value="Create"/>
                 </div>
             </form>
-            <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-success mt-3">Go Back</a>
+            <a th:href="@{/seating/details/{id}(id=${seating.id})}" class="btn btn-light mt-3">Go Back</a>
         </main>
     </div>
 </body>

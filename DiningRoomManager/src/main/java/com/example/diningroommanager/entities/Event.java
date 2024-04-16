@@ -27,11 +27,13 @@ public class Event {
     //@DateTimeFormat(pattern="HH:mm")
     private Integer seatingDuration;
     @NotBlank(message = "Name is required")
+    @Size(min = 5, max = 100, message = "Name must be between 5 and 100 characters.")
     private String name;
 
     private String description;
     @NotNull(message = "Price is required")
     @Positive(message = "Price can't be negative")
+    @Max(value = 10000, message = "Event price cannot exceed $10,000.00")
     private Double price;
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY, cascade = CascadeType.ALL)//cascade makes all related seatings get deleted if event gets deleted
     private List<Seating> seatings;

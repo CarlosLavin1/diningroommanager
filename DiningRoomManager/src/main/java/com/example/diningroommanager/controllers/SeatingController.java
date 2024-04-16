@@ -3,6 +3,7 @@ package com.example.diningroommanager.controllers;
 import com.example.diningroommanager.config.interfaces.EmailConfig;
 import com.example.diningroommanager.entities.ReservationRequest;
 import com.example.diningroommanager.entities.Seating;
+import com.example.diningroommanager.entities.Status;
 import com.example.diningroommanager.login.LoginToken;
 import com.example.diningroommanager.repositories.*;
 import com.example.diningroommanager.services.EmailSender;
@@ -108,8 +109,12 @@ public class SeatingController {
 
         if (reservationRequest.isPresent()) {
             ReservationRequest request = reservationRequest.get();
+            var oldStatus = request.getStatus();
             request.setStatus(statusRepository.getStatusByValue("approved"));
             reservationReqRepo.save(request);
+
+            // Send email notification
+            sendReservationStatusEmail(request, oldStatus, request.getStatus());
         }
 
         // Add the necessary model attributes here
@@ -125,40 +130,24 @@ public class SeatingController {
     }
 
 
-    private void sendReservationEmail(ReservationRequest res, StatusRepository statusRepository){
-        var status = statusRepository.getStatusByValue("pending");
-
-        // Fetch the DiningTable from its repository
-        var diningTable = tableRepository.findById(res.getDiningTable().getId());
-        if (diningTable.isPresent()) {
-            res.setDiningTable(diningTable.get());
-        }
-
-        // format the date
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
-
-        var formattedDateTime = res.getSeating().getStartDateAndTime().format(formatter);
-
-        try{
-            // Check if the email is not null and blank
-            if(res.getEmail() != null & !res.getEmail().isBlank()) {
-
-                // Prepare subject and message for the email
-                var subject = "Request received!";
-                var msg = "Hello, " + res.getFullName() + ".\n\n" +
-                        "Your new reservation has been created with the following details:\n" +
-                        "Seating start date and time: " + formattedDateTime + "\n" +
-                        "Group Size: " + res.getGroupSize() + "\n" +
-                        "Reservation Status: " + status.getDisplay() + "\n" +
-                        "Number of seats for table: " + res.getDiningTable().getNumberOfSeats() + "\n\n" +
+    private void sendReservationStatusEmail(ReservationRequest reservationRequest, Status oldStatus, Status newStatus) {
+        try {
+            // Check if the email is not null and not blank
+            if (reservationRequest.getEmail() != null && !reservationRequest.getEmail().isBlank()) {
+                // Prepare the subject and message for the email
+                var subject = "Reservation Status Update";
+                var msg = "Hello, " + reservationRequest.getFullName() + ".\n\n" +
+                        "Your reservation has been updated with the following status change:\n" +
+                        "Previous Status: " + oldStatus.getDisplay() + "\n" +
+                        "New Status: " + newStatus.getDisplay() + "\n\n" +
                         "Thank you for your reservation!";
 
-                // Send the mail
-                emailSender.sendSimpleEmail(subject, msg, emailConfig.getDefaultFromEmailAddress(), res.getEmail());
+                // Send the email
+                emailSender.sendSimpleEmail(subject, msg, emailConfig.getDefaultFromEmailAddress(), reservationRequest.getEmail());
             } else {
-                System.out.println("Can't send email for user: " +  res.getFullName() + ", no email was provided");
+                System.out.println("Can't send email for user: " + reservationRequest.getFullName() + ", no email was provided");
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("Error sending email: " + ex.getMessage());
         }
     }

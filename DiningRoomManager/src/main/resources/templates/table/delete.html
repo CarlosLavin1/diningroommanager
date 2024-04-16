@@ -6,8 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.js}"></script>
 </head>
-<body>
-    <div class="container">
+<body class="bg-secondary">
+    <div class="container" th:if="${authenticated}">
         <header th:insert="~{nav::navbar}"></header>
 
         <h1>Delete Table</h1>
@@ -33,7 +33,7 @@
         </div>
 
         <div>
-            <a th:href="@{/layout/detail/{id}(id=${table.layout.id})}">Go Back</a>
+            <a th:href="@{/layout/detail/{id}(id=${table.layout.id})}" class="btn btn-light">Go Back</a>
         </div>
     </div>
 </body>

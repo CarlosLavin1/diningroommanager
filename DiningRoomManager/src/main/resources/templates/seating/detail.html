@@ -62,7 +62,7 @@
                       method="post">
                     <input type="submit" value="Approve" class="btn btn-success"/>
                 </form>
-                <a th:if="${res.diningTable == null || res.diningTable.id == null}"
+                <a th:if="${authenticated and (res.diningTable == null || res.diningTable.id == null)}"
                    th:href="@{/table/create/{id}(id=${seating.event.layout.id})}" class="btn btn-primary">Assign
                     Table</a>
                 <a th:href="@{/res/detail/{id}(id=${res.id})}" class="btn btn-info">Details</a> |
@@ -77,9 +77,9 @@
         this seating</h4>
 
 
-    <a th:href="@{/res/create/{id}(id=${seating.id})}" class="btn btn-primary">Request a Reservation</a>
+    <a th:if="${authenticated}" th:href="@{/res/create/{id}(id=${seating.id})}" class="btn btn-primary">Request a Reservation</a>
     <br>
-    <a th:href="@{/event/details/{id}(id=${seating.event.id})}" class="btn btn-success">Go Back</a>
+    <a th:href="@{/event/details/{id}(id=${seating.event.id})}" class="btn btn-light">Go Back</a>
 </div>
 </body>
 </html>

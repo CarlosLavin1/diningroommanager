@@ -42,7 +42,7 @@
             <span th:text="*{status.display}"></span>
         </dd>
     </dl>
-    <form method="post" th:action="@{/res/delete/{id}(id=${res.id})}">
+    <form th:if="${authenticated}" method="post" th:action="@{/res/delete/{id}(id=${res.id})}">
         <input name="id" th:value="${res.id}" type="hidden">
         <div class="form-group">
             <input class="btn btn-primary" type="submit" value="Delete"/>

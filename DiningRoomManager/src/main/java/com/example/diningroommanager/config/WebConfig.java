@@ -32,9 +32,12 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/menu/create**")
                 .addPathPatterns("/menu/edit/{id}**")
-                .addPathPatterns("/menu/delete/{id}**");
+                .addPathPatterns("/menu/delete/{id}**")
+                .addPathPatterns("/menuItem/create/{id}**")
+                .addPathPatterns("/menuItem/edit/{id}**")
+                .addPathPatterns("/menuItem/delete/{id}**");
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/table/create**")
+                .addPathPatterns("/table/create/{id}**")
                 .addPathPatterns("/table/edit/{id}**")
                 .addPathPatterns("/table/delete/{id}**");
     }

@@ -7,8 +7,8 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.js}"></script>
 </head>
-<body>
-    <div class="container">
+<body class="bg-secondary">
+    <div class="container" th:if="${authenticated}">
         <header th:insert="~{nav::navbar}"></header>
 
         <h1 class="text-center mt-5"  th:if="${authenticated}">Edit Layout</h1>
@@ -29,9 +29,9 @@
                     <p class="alert alert-warning" th:errors="*{description}"></p>
                 </div>
 
-                <input type="submit" class="btn btn-dark" value="Edit">
+                <input th:if="${authenticated}" type="submit" class="btn btn-dark" value="Edit">
                 <div>
-                    <a th:href="@{/layout}">Go Back</a>
+                    <a th:href="@{/layout}" class="btn btn-light">Go Back</a>
                 </div>
             </form>
         </div>

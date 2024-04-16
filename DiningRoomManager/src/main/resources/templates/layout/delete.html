@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script th:src="@{/js/bootstrap.js}"></script>
 </head>
-<body>
+<body class="bg-secondary">
     <div class="container">
         <header th:insert="~{nav::navbar}"></header>
 
@@ -45,7 +45,7 @@
             </form>
         </div>
     <div th:if="${authenticated}">
-        <a th:href="@{/layout}">Go Back</a>
+        <a th:href="@{/layout}" class="btn btn-light">Go Back</a>
     </div>
     </div>
 </body>

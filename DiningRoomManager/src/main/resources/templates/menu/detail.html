@@ -15,34 +15,36 @@
     <hr>
 
     <dl class="row" th:object="${menu}">
-        <dt class="text-white col-sm-2 ">Name:</dt>
+        <dt class="col-sm-2 ">Name:</dt>
         <dd class="col-sm-10">
-            <span th:text="*{name}" class="text-white"></span>
+            <span th:text="*{name}"></span>
         </dd>
-        <dt class="text-white col-sm-2">Description:</dt>
+        <dt class="col-sm-2">Description:</dt>
         <dd class="col-sm-10">
-            <span th:text="*{description}" class="text-white"></span>
+            <span th:text="*{description}"></span>
         </dd>
-        <dt class="text-white col-sm-2" >Date Created:</dt>
+        <dt class="col-sm-2" >Date Created:</dt>
         <dd class="col-sm-10" >
-            <span th:text="*{#dates.format(dateCreated, 'yyyy-MM-dd hh:mm a')}" class="text-white"></span>
+            <span th:text="*{#dates.format(dateCreated, 'yyyy-MM-dd hh:mm a')}"></span>
         </dd>
     </dl>
+    <hr>
 
     <div th:if="${menuItems != null and !menuItems.isEmpty()}">
+        <h3>Menu Items for <span th:text="${menu.name}"></span></h3>
         <table class="table table-dark" th:unless="menu == null">
             <thead>
             <tr>
                 <th class="text-info">Name</th>
                 <th class="text-info">Description</th>
-                <th class="text-info">Manage</th>
+                <th th:if="${authenticated}" class="text-info">Manage</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="menuItem : ${menuItems}">
                 <td th:text="${menuItem.name}"></td>
                 <td th:text="${menuItem.description}"></td>
-                <td>
+                <td th:if="${authenticated}">
                     <a th:href="@{/menuItem/edit/{id}(id=${menuItem.id})}" class="btn btn-warning">Edit</a> |
                     <a th:href="@{/menuItem/delete/{id}(id=${menuItem.id})}" class="btn btn-danger">Delete</a>
                 </td>
@@ -51,14 +53,14 @@
         </table>
     </div>
 
-    <a th:href="@{/menuItem/create/{id}(id=${menu.id})}" class="btn btn-dark">Create Menu Item</a>
+    <a th:if="${authenticated}" th:href="@{/menuItem/create/{id}(id=${menu.id})}" class="btn btn-dark">Create Menu Item</a>
 
     <div th:if="${menuItems == null or menuItems.isEmpty()}">
         <span class="text-warning">No menu items for this menu yet!</span>
     </div>
 
     <div>
-        <a th:href="@{/menu}">Go Back</a>
+        <a th:href="@{/menu}" class="btn btn-light">Go Back</a>
     </div>
 </div>
 </body>
