@@ -86,7 +86,10 @@ public class LayoutController {
     }
 
     @PostMapping(value = "layout/edit/{id}")
-    public String edit(Layout layout, Model model) {
+    public String edit(@Valid Layout layout, BindingResult br, Model model) {
+        if (br.hasErrors()){
+            return "layout/edit";
+        }
 
         layoutRepository.save(layout);
 

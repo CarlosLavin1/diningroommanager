@@ -8,7 +8,7 @@
     <script th:src="@{/js/bootstrap.js}"></script>
 </head>
 <body class="bg-secondary">
-    <div class="container">
+    <div class="container" th:if="${authenticated}">
         <header th:insert="~{nav::navbar}"></header>
 
         <h1 class="text-center">Edit table</h1>
@@ -22,7 +22,7 @@
                 <p class="text-danger" th:errors="*{numberOfSeats}"></p>
 
                 <input class="btn btn-dark" type="submit" value="Edit">
-                <a th:href="@{/layout/detail/{id}(id=${table.layout.id})}">Go back</a>
+                <a th:href="@{/layout/detail/{id}(id=${table.layout.id})}" class="btn btn-light">Go back</a>
             </form>
         </div>
     </div>

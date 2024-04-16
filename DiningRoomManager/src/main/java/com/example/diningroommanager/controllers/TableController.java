@@ -63,7 +63,7 @@ public class TableController {
     }
 
     @PostMapping(value = "table/create/{id}")
-    public String create(@Valid DiningTable diningTable, @PathVariable int id, BindingResult br) {
+    public String create(@Valid @ModelAttribute(value = "tables") DiningTable diningTable, BindingResult br, @PathVariable int id, Model model) {
         var layout = layoutRepository.findById(id).orElse(null);
 
         if (!br.hasErrors()) {
@@ -74,6 +74,11 @@ public class TableController {
 
             return "redirect:/layout/detail/" + id;
         } else {
+            if (layout != null){
+                diningTable.setLayout(layout);
+                model.addAttribute("tables", diningTable);
+            }
+
             return "table/create";
         }
     }

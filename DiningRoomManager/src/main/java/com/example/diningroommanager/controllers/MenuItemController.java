@@ -80,11 +80,12 @@ public class MenuItemController {
 
     @PostMapping(value = "menuItem/edit/{id}")
     public String edit(@PathVariable int id, @Valid MenuItem menuItem, BindingResult br, Model model) {
+        // Find the existing menu item
+        var existingMenuItem = menuItemRepository.findById(id);
+
         // Check for validation errors
         if (!br.hasErrors()) {
 
-            // Find the existing menu item
-            var existingMenuItem = menuItemRepository.findById(id);
 
             // Check if the menu item is present
             if (existingMenuItem.isPresent()){
@@ -104,6 +105,11 @@ public class MenuItemController {
                 // Redirect back to the detail page
                 return "redirect:/menu/detail/" + menu.getId();
             }
+        }
+
+        // set the menu of the submitted menuItem
+        if (existingMenuItem.isPresent()){
+            menuItem.setMenu(existingMenuItem.get().getMenu());
         }
 
         model.addAttribute("menuItem", menuItem);

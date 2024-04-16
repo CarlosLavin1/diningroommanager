@@ -48,17 +48,17 @@
                 <thead>
                 <tr>
                     <th class="text-info">Number of seating</th>
-                    <th class="text-info">Manage</th>
+                    <th th:if="${authenticated}" class="text-info">Manage</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="table: ${tables}">
                     <td>
-                        <span th:text="${table.numberOfSeats}"></span>
+                        <span th:text="${table.numberOfSeats} + (${table.numberOfSeats > 1 ? ' seats' : ' seat'})"></span>
                     </td>
-                    <td>
-                        <a class="btn btn-warning" th:href="@{/table/edit/{id}(id=${table.id})}">Edit</a> |
-                        <a class="btn btn-danger" th:href="@{/table/delete/{id}(id=${table.id})}">Delete</a>
+                    <td th:if="${authenticated}">
+                        <a th:if="${authenticated}" class="btn btn-warning" th:href="@{/table/edit/{id}(id=${table.id})}">Edit</a> |
+                        <a th:if="${authenticated}" class="btn btn-danger" th:href="@{/table/delete/{id}(id=${table.id})}">Delete</a>
                     </td>
                 </tr>
                 </tbody>
@@ -66,12 +66,12 @@
 
         </div>
 
-        <a th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-dark">Create Table</a>
+        <a th:if="${authenticated}" th:href="@{/table/create/{id}(id=${layout.id})}" class="btn btn-dark">Create Table</a>
         <div th:if="${tables == null or tables.isEmpty()}">
             No tables for this layout yet!
         </div>
         <div>
-            <a th:href="@{/layout}">Go Back</a>
+            <a th:href="@{/layout}" class="btn btn-light">Go Back</a>
         </div>
     </div>
 </body>

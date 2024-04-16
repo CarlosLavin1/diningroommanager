@@ -7,7 +7,7 @@
     <script th:src="@{/js/bootstrap.js}"></script>
 </head>
 <body class="bg-secondary">
-<div class="container">
+<div class="container" th:if="${authenticated}">
     <header th:insert="~{nav::navbar}"></header>
     <div th:if="${authenticated}">
         <h1 class="text-white">Delete Menu</h1>
@@ -39,7 +39,7 @@
         </div>
 
         <div>
-            <a th:href="@{/menu/detail/{id}(id=${menu.id})}">Go Back</a>
+            <a th:href="@{/menu/detail/{id}(id=${menu.id})}" class="btn btn-light">Go Back</a>
         </div>
     </div>
 </div>
