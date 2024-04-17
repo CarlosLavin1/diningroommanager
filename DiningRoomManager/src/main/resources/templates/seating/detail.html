@@ -66,7 +66,7 @@
                    th:href="@{/table/create/{id}(id=${seating.event.layout.id})}" class="btn btn-primary">Assign
                     Table</a>
                 <a th:href="@{/res/detail/{id}(id=${res.id})}" class="btn btn-info">Details</a> |
-                <a th:if="${authenticated}" th:href="@{/res/edit/{id}(id=${res.id})}" class="btn btn-warning">Edit</a> |
+                <a th:if="${authenticated}" th:href="@{/res/edit/{id}(id=${res.id})}" th:href="@{/res/edit/{id}(id=${res.id})}" class="btn btn-warning">Edit</a> |
                 <a th:if="${authenticated}" th:href="@{/res/delete/{id}(id=${res.id})}" class="btn btn-danger">Delete</a>
 
             </td>
