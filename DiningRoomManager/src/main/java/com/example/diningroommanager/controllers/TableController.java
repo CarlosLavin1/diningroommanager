@@ -89,37 +89,25 @@ public class TableController {
         var table = tableRepository.findById(id);
 
         if (table.isPresent()) {
-            model.addAttribute("table", table.get());
+            model.addAttribute("diningTable", table.get());
         }
 
         return "table/edit";
     }
 
     @PostMapping(value = "table/edit/{id}")
-    public String edit(DiningTable diningTable, @PathVariable int id, BindingResult br, Model model) {
-        // Check for errors
-        if (!br.hasErrors()) {
-
-            // Find the existing dining table
-            var existingTable = tableRepository.findById(id);
-
-            // Check if the table is present
-            if (existingTable.isPresent()){
-                // Get the table to update
-                var tableToUpdate = existingTable.get();
-
-                // Get the layout from the existing table
-                var layout = tableToUpdate.getLayout();
-
-                // Set and save the new number of seats
-                tableToUpdate.setNumberOfSeats(diningTable.getNumberOfSeats());
-                tableRepository.save(tableToUpdate);
-
-                // Redirect back to the detail page
-                return "redirect:/layout/detail/" + layout.getId();
-            }
+    public String edit(@PathVariable int id, @Valid DiningTable diningTable,  BindingResult br, Model model) {
+        var old = tableRepository.findById(id);
+        if(old.isPresent()){
+            diningTable.setLayout(old.get().getLayout());
         }
-
+        if(!br.hasErrors()){
+            tableRepository.save(diningTable);
+            if(old.isPresent()){
+                return "redirect:/layout/detail/" + old.get().getLayout().getId();
+            }
+            return "redirect:/";
+        }
         return "table/edit";
     }
 

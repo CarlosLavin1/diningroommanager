@@ -14,16 +14,14 @@ public class DiningTable {
     @Column(name = "tableId")
     private int id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "layoutId", foreignKey = @ForeignKey(name = "FK_Layout_Table"))
     private Layout layout;
 
     @NotNull
-    @Positive(message = "Number of seats must be a positive number")
     @Min(value = 2, message = "Min number of seats per table is 2")
     @Max(value = 12, message = "Max number of seats per table is 12")
-    private int numberOfSeats;
+    private Integer numberOfSeats;
 
     public DiningTable() {
     }
@@ -61,11 +59,11 @@ public class DiningTable {
         this.layout = layout;
     }
 
-    public int getNumberOfSeats() {
+    public Integer getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public void setNumberOfSeats(int numberOfSeats) {
+    public void setNumberOfSeats(Integer numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
 }
