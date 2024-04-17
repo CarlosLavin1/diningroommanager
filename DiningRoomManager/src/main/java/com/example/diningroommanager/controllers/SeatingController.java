@@ -97,6 +97,7 @@ public class SeatingController {
 
             model.addAttribute("seating", seating);
             model.addAttribute("validRes", validReservations);
+            model.addAttribute("resApproved", 2);
         }
 
         return "seating/detail";
