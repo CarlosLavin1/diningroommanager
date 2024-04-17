@@ -18,7 +18,7 @@ public class DiningTable {
     @JoinColumn(name = "layoutId", foreignKey = @ForeignKey(name = "FK_Layout_Table"))
     private Layout layout;
 
-    @NotNull
+    @NotNull(message = "Number of seats is required")
     @Min(value = 2, message = "Min number of seats per table is 2")
     @Max(value = 12, message = "Max number of seats per table is 12")
     private Integer numberOfSeats;
